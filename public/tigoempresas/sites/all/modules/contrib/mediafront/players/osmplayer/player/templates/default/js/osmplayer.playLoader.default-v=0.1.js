@@ -1,0 +1,8 @@
+(function(template,osmplayer){var osmplayer=osmplayer||{};osmplayer.playLoader=osmplayer.playLoader||{};osmplayer.playLoader[template]=function(context,options){minplayer.playLoader.call(this,context,options);};osmplayer.playLoader[template].prototype=new minplayer.playLoader();osmplayer.playLoader[template].prototype.constructor=osmplayer.playLoader[template];osmplayer.playLoader[template].prototype.getDisplay=function(){if(this.options.build){jQuery('.minplayer-'+template+'',this.context).prepend('\
+      <div class="minplayer-'+template+'-loader-wrapper">\
+        <div class="minplayer-'+template+'-big-play ui-state-default"><span></span></div>\
+        <div class="minplayer-'+template+'-loader">&nbsp;</div>\
+        <div class="minplayer-'+template+'-preview ui-widget-content"></div>\
+      </div>');}
+return jQuery('.minplayer-'+template+' .minplayer-'+template+'-loader-wrapper',this.context);}
+osmplayer.playLoader[template].prototype.loadPreview=function(image){if(!minplayer.playLoader.prototype.loadPreview.call(this,image)){this.elements.preview.addClass('no-image');}};osmplayer.playLoader[template].prototype.getElements=function(){var elements=minplayer.playLoader.prototype.getElements.call(this);return jQuery.extend(elements,{busy:jQuery('.minplayer-'+template+'-loader',this.display),bigPlay:jQuery('.minplayer-'+template+'-big-play',this.display),preview:jQuery('.minplayer-'+template+'-preview',this.display)});};})('default',osmplayer);

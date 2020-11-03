@@ -1,0 +1,49 @@
+.form{
+  background: black;
+}
+@media screen and (max-width: 575px){
+  .form{
+      position: relative;
+      }
+}
+
+.whatsapp {
+  position: fixed;
+  bottom: 10px;
+  left: 0px;
+  width: 100px;
+  
+}
+#btnModal2{
+  display: none;
+}
+
+
+/*
+  body footer {
+    background-color: #000000;
+    text-align: center;
+    margin-top: 100px;
+    padding-top: 11%;
+    padding-bottom: 30px; }
+    body footer h3 {
+      color: #ffffff; }
+      @media (max-width: 667px) {
+        body footer h3 {
+          text-align: left;
+          font-size: 14px;
+          padding-left: 15%; } }
+    body footer .btn {
+      color: #ffffff;
+      border: solid 1px;
+      width: 180px;
+      border-radius: 29px;
+      margin-top: 15px; }
+*/
+b{
+  
+background-color: white;
+}
+.requisitos{
+  color: red;
+}

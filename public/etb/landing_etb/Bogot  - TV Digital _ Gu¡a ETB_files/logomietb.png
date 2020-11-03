@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+	<title>ETB</title>
+    
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="img1/favicon.ico" />
+    
+    <link href='css/style.css' rel='stylesheet' type='text/css'/>
+	<link rel="shortcut icon" href="img/favicon.ico">
+	
+	<!--<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-62872443-4', 'auto');
+  ga('send', 'pageview');
+
+</script>-->
+	
+	<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TDKHGJC');</script>
+<!-- End Google Tag Manager -->
+
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TDKHGJC"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+        <header>
+            <div class="wrap">
+                <a href="https://etb.com"><img class="logo-head" src="img/logo.png"/></a>
+            </div>
+        </header>
+
+        <div class="content">
+  
+                <div class="left-cont">
+                    <div class="cont-terminos">
+                       <p class="titu"><span>¡Ups!</span> En estos momentos la página que buscas se encuentra en mantenimiento, estamos trabajando para brindarte un mejor servicio.</p>
+                        <p class="separador"></p>
+                        <!--<p>
+                       Te informamos que durante los días 17, 18 y 19 de febrero, el portal Mi ETB (servicioalcliente.etb.com.co) se encontrará fuera de servicio por labores de mantenimiento. Este proceso no afectará el derecho de que radiques PQR ante ETB.
+                        </p>-->
+                        <p class="subtitu">
+                      Agradecemos tu comprensión.
+                        </p>
+                    </div>
+                    <div class="cont-ico">
+                    <img src="img/icono.png"></div>
+                </div>
+       
+        </div>
+
+        <footer>
+            <div class="wrap">
+              <div class="ti"><h1>Si tienes dudas e inquietudes puedes contactarnos a través de </h1></div>
+              <div class="redes">
+                  <ul>
+                       <li><a href="https://www.facebook.com/ETB.Colombia/?fref=ts"><img src="img/ico-face.png"></a><p>Facebook</p></li>
+                       <li><a href="https://twitter.com/ETBsoluciones"><img src="img/ico-tw.png"></a><p>Twitter</p></li>
+                       <li><a href="https://etb.com/centrosexperiencia/"><img src="img/ico-tie.png"></a><p>Centros <br>Experiencia</p></li>
+                  </ul>  
+             
+                <div class="btn"><img src="img/btn-li.png"></div>
+                </div> 
+                 
+            </div>
+        </footer>
+  
+</body>
+</html>
+

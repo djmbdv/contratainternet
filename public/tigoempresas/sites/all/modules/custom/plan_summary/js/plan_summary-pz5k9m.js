@@ -1,0 +1,1 @@
+(function($){Drupal.behaviors.plan_summary={attach:function(context,settings){$("a.detalle").click(function(){var clase=$(this).attr("data-tab");$("."+clase).toggleClass("active");});$("a.next").click(function(){$(".webform-confirmation").remove();$(".links a").trigger("click");});}};})(jQuery);

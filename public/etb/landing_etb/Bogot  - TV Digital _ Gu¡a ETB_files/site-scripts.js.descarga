@@ -1,0 +1,1023 @@
+$(document).ready(function () {
+	var d = new Date();
+
+    if (d.getHours() < 6 || d.getHours() >= 22) {
+        $(".getdatchat").removeClass("popb3");
+		$('.getdatchat').css('display', 'none');
+    }
+	
+	var so = navigator.appVersion;
+
+	if ($('#coronaAMovil').length > 0) {
+        if (so.toLowerCase().indexOf("win") >= 0) {
+			$('#coronaAMovil').attr("href",'https://coronaviruscolombia.gov.co/Covid19/aislamiento-saludable/coronapp.html');
+        } else if (so.toLowerCase().indexOf("android") >= 0) {
+			$('#coronaAMovil').attr("href",'http://url.ins.gov.co/0vh1s');
+        } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+			$('#CoronApp').attr("href",'https://apps.apple.com/co/app/coronapp-colombia/id1502037648?l=es');
+        } else if (so.toLowerCase().indexOf("mac") >= 0) {
+			$('#coronaAMovil').attr("href",'https://coronaviruscolombia.gov.co/Covid19/aislamiento-saludable/coronapp.html');
+        } 
+    }
+
+    if ($('#CoronApp').length > 0) {
+        if (so.toLowerCase().indexOf("win") >= 0) {
+            $('#CoronApp').attr("href",'https://coronaviruscolombia.gov.co/Covid19/aislamiento-saludable/coronapp.html');
+        } else if (so.toLowerCase().indexOf("android") >= 0) {
+            $('#CoronApp').attr("href",'http://url.ins.gov.co/0vh1s');
+        } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+			$('#CoronApp').attr("href",'https://apps.apple.com/co/app/coronapp-colombia/id1502037648?l=es');
+        } else if (so.toLowerCase().indexOf("mac") >= 0) {
+			$('#CoronApp').attr("href",'https://coronaviruscolombia.gov.co/Covid19/aislamiento-saludable/coronapp.html');
+        } 
+    }
+	
+	if ($('#coronaA').length > 0) {
+        if (so.toLowerCase().indexOf("win") >= 0) {
+			$('#coronaA').attr("href",'https://coronaviruscolombia.gov.co/Covid19/aislamiento-saludable/coronapp.html');
+        } else if (so.toLowerCase().indexOf("android") >= 0) {
+			$('#coronaA').attr("href",'http://url.ins.gov.co/0vh1s');
+        } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+			$('#coronaA').attr("href",'https://apps.apple.com/co/app/coronapp-colombia/id1502037648?l=es');
+        } else if (so.toLowerCase().indexOf("mac") >= 0) {
+			$('#coronaA').attr("href",'https://coronaviruscolombia.gov.co/Covid19/aislamiento-saludable/coronapp.html');
+        } 
+    }	
+	
+    if ($('#pruebasM').length > 0) {
+        $('header').css('height', '115px');
+    }
+	
+    Inicio();
+    CallAll();
+
+    //$('.img-responsive').click(function () { iframeLoaded(); });
+
+    $(window).bind('resize', function () {
+        Inicio();
+    });
+
+    if (getParameterByName('utm_source') !== null) {
+        utm_source = getParameterByName('utm_source');
+    }
+    if (getParameterByName('utm_medium') !== null) {
+        utm_medium = getParameterByName('utm_medium');
+    }
+    if (getParameterByName('utm_campaign') !== null) {
+        utm_campaign = getParameterByName('utm_campaign');
+    }
+    if (getParameterByName('id_pauta') !== null) {
+        id_pauta = getParameterByName('id_pauta');
+    }
+
+    Banners();
+
+    $('#pop').popper();
+
+    validaaceptcoookies();
+    $(".aceptcoookies").click(function () {
+        localStorage.aceptcoookies = 'si';
+        validaaceptcoookies();
+    });
+
+    $(".ctcInicio").click(function () {
+        ctcPagina.value = "Inicio";
+    });
+    $(".ctcHome").click(function () {
+        ctcPagina.value = "Home";
+    });
+
+    $(".closepsa, .cierrepop").click(function () {
+        $('.popbannerarea').hide();
+        $('.cierrepop').hide();
+
+    });
+    
+
+    var timer;
+    var tOut;
+    var delay = 200;
+    /* btns menu*/
+
+    $(".linktop").hover(function () {
+
+        var targt = $(this);
+        relmenu = targt.attr('rel');
+
+        timer = setTimeout(function () {
+            if (!(targt.hasClass("openmen"))) {
+
+                $(".linktop").removeClass("openmen");
+                targt.addClass("openmen");
+
+                $('.sub-nav').removeClass('sn-show');
+                $(".page-nav").removeClass('pn-show');
+
+                $(".pn" + relmenu).addClass('pn-show');
+            }
+        }, delay);
+    }, function () {
+        // on mouse out, cancel the timer
+        clearTimeout(timer);
+    });
+
+    $('.page-nav li').hover(function () {
+        var targt2 = $(this);
+        $('.sub-nav').removeClass('sn-show');
+        targt2.find('.sub-nav').addClass('sn-show');
+    });
+
+    var timer2;
+    var tOut2;
+    var delay2 = 600;
+
+    $(".content").hover(function () {
+        timer2 = setTimeout(function () {
+            $(".linktop").removeClass("openmen");
+            $('.sub-nav').removeClass('sn-show');
+            $(".page-nav").removeClass('pn-show');
+        }, delay2);
+    }, function () {
+        // on mouse out, cancel the timer
+        clearTimeout(timer2);
+    });
+
+    if (!($("body").hasClass('rpv-site'))) {
+        $(".btn-ham").click(function () {
+            if ($(".btn-ham").hasClass('ham-open')) {
+                $('.links-head').stop();
+                $(".btn-ham").removeClass('ham-open');
+                $(".linktop").removeClass("openmen");
+                $('.sub-nav').removeClass('sn-show');
+                $(".page-nav").removeClass('pn-show');
+                $('.links-head').removeClass('lh-full');
+
+                $('.links-head').animate({ width: "0px" }, 1000, function () {
+                    $('.links-head').removeClass('lh-full');
+                });
+                $('.links-head').removeClass('lh-full');
+            } else {
+                $('.links-head').stop();
+                $(".btn-ham").addClass('ham-open');
+
+                if ($('.contact-head').hasClass('styleEmp')) {
+                    $('.links-head').animate({ width: "938px" }, 1000, function () {
+                        $('.links-head').addClass('lh-full');
+                    });
+
+                } else {
+                    $('.links-head').animate({ width: "800px" }, 1000, function () {
+                        $('.links-head').addClass('lh-full');
+                    });
+                }
+
+            }
+        });
+
+
+        $(".btn-ham").mouseenter(function () {
+            if ($(".btn-ham").hasClass('ham-open')) {
+
+            } else {
+                $('.links-head').stop();
+                $(".btn-ham").addClass('ham-open');
+
+                if ($('.contact-head').hasClass('styleEmp')) {
+                    $('.links-head').animate({ width: "938px" }, 1000, function () {
+                        $('.links-head').addClass('lh-full');
+                    });
+
+                } else {
+                    $('.links-head').animate({ width: "800px" }, 1000, function () {
+                        $('.links-head').addClass('lh-full');
+                    });
+                }
+            }
+        });
+    } else {
+        $(".btn-ham").click(function () {
+            if ($(".btn-ham").hasClass('ham-open')) {
+                $('.links-head').stop();
+
+                $(".btn-ham").removeClass('ham-open');
+                $(".linktop").removeClass("openmen");
+                $('.sub-nav').removeClass('sn-show');
+                $(".page-nav").removeClass('pn-show');
+                $('.links-head').removeClass('lh-full');
+
+                $('.links-head').animate({ left: "-100%" }, 500, function () {
+                    $('.links-head').removeClass('lh-full');
+                    $('header').css('height', '70px').css('overflow', 'hidden');
+                });
+                $('.links-head').removeClass('lh-full');
+            } else {
+                $('.links-head').stop();
+                $(".btn-ham").addClass('ham-open');
+
+                $('header').css('height', '100%').css('overflow', 'auto');
+                $('.links-head').animate({ left: "0px" }, 500, function () {
+                    $('.links-head').addClass('lh-full');
+                });
+            }
+        });
+    }
+
+    function validaaceptcoookies() {
+        var aceptcoookies = localStorage.aceptcoookies;
+        if (aceptcoookies === "si") {
+            $("#contcookies").hide();
+        }
+    }
+
+    function CallAll() {
+        MasBotones();
+    };
+
+    function MasBotones() {
+        $(".btn-closebuy1").click(function () {
+            $(".buyDatos1").fadeOut(600);
+        });
+
+        $(".getdatchat").click(function () {
+            var URL = $(this).attr('rel');
+
+            //-------------------------------------------------------------Hogares-------------------------------------------------------------//
+            if (URL.indexOf("Hogares1") > -1) {
+                var d = new Date();
+                var festivos = ['6/10/2017', '13/10/2017', '8/11/2017', '25/11/2017', '1/0/2018', '8/0/2018', '19/2/2018', '29/2/2018', '30/2/2018', '1/4/2018', '14/4/2018', '4/5/2018', '11/5/2018', '2/6/2018', '20/6/2018', '7/7/2018', '20/7/2018', '15/9/2018', '5/10/2018', '12/10/2018', '25/11/2018']; //festivos
+                var e = (d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear()); //fecha actual
+                //calcula festivos
+                for (var x = 0; x < festivos.length; x++) {
+                    if (festivos[x] == e) {
+                        if (((d.getHours()) >= 6) && ((d.getHours()) <= 22)) {
+                            //window.location = "https://etbcolombia.custhelp.com/app/chat/chat_launch";//direcciona
+                            window.open('https://etbcolombia.custhelp.com/app/chat/chat_launch', '_blank');
+                        }
+                        else {
+                            $(".btn-closebuy1").click(function () {
+                                $(".buyDatos1").fadeOut(600);
+                            });
+
+                            //$(".getdatchat").click(function () {
+                            $(".buyDatos1").fadeIn(600);
+                            var URL = $(this).attr('rel');
+                            $('#localscene1').attr('src', URL);
+                            //});
+                            //window.location = "https://etb.com/chat_off/chat_off.aspx?origen=Hogares";//direcciona
+                        }
+                        break;
+                    }
+                }
+                if (d.getDay() == 0) {
+                    if (((d.getHours()) >= 6) && ((d.getHours()) <= 22)) {
+                        // window.location = "https://etbcolombia.custhelp.com/app/chat/chat_launch";//direcciona
+                        window.open('https://etbcolombia.custhelp.com/app/chat/chat_launch', '_blank');
+                    }
+                    else {
+                        $(".btn-closebuy1").click(function () {
+                            $(".buyDatos1").fadeOut(600);
+                        });
+
+                        //$(".getdatchat").click(function () {
+                        $(".buyDatos1").fadeIn(600);
+                        var URL = $(this).attr('rel');
+                        $('#localscene1').attr('src', URL);
+                        //});
+                        //window.location = "https://etb.com/chat_off/chat_off.aspx?origen=Hogares";//direcciona
+                    }
+                }
+                else {
+                    if (((d.getHours()) >= 6) && ((d.getHours()) <= 22)) {
+                        // window.location = "https://etbcolombia.custhelp.com/app/chat/chat_launch";//direcciona
+                        window.open('https://etbcolombia.custhelp.com/app/chat/chat_launch', '_blank');
+                    }
+                    else {
+                        $(".btn-closebuy1").click(function () {
+                            $(".buyDatos1").fadeOut(600);
+                        });
+
+                        //$(".getdatchat").click(function () {
+                        $(".buyDatos1").fadeIn(600);
+                        var URL = $(this).attr('rel');
+                        $('#localscene1').attr('src', URL);
+                        //});
+                        //window.location = "https://etb.com/chat_off/chat_off.aspx?origen=Hogares";//direcciona
+                    }
+                }
+            }
+
+            //-------------------------------------------------------------Negocios-------------------------------------------------------------//
+            if (URL.indexOf("Negocios1") > -1) {
+                var d = new Date();
+                var festivos = ['6/10/2017', '13/10/2017', '8/11/2017', '25/11/2017', '1/0/2018', '8/0/2018', '19/2/2018', '29/2/2018', '30/2/2018', '1/4/2018', '14/4/2018', '4/5/2018', '11/5/2018', '2/6/2018', '20/6/2018', '7/7/2018', '20/7/2018', '15/9/2018', '5/10/2018', '12/10/2018', '25/11/2018']; //festivos
+                var e = (d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear()); //fecha actual
+                //calcula festivos
+                for (var x = 0; x < festivos.length; x++) {
+                    if (festivos[x] == e) {
+
+                        $(".btn-closebuy1").click(function () {
+                            $(".buyDatos1").fadeOut(600);
+                        });
+
+                        //$(".getdatchat").click(function () {
+                        $(".buyDatos1").fadeIn(600);
+                        var URL = $(this).attr('rel');
+                        $('#localscene1').attr('src', URL);
+                        //});
+                        //window.location = "https://etb.com/chat_off/chat_off.aspx?origen=Negocios";//direcciona
+                        break;
+                    }
+                }
+                if (d.getDay() == 0) {
+
+                    $(".btn-closebuy1").click(function () {
+                        $(".buyDatos1").fadeOut(600);
+                    });
+
+                    //$(".getdatchat").click(function () {
+                    $(".buyDatos1").fadeIn(600);
+                    var URL = $(this).attr('rel');
+                    $('#localscene1').attr('src', URL);
+                    //});
+                    //window.location = "https://etb.com/chat_off/chat_off.aspx?origen=Negocios";//direcciona
+                }
+                else {
+                    if (d.getDay() == 6) {
+                        if (((d.getHours()) >= 8) && ((d.getHours()) <= 12)) {
+                            // window.location = "https://etbcolombia.custhelp.com/app/chat/chat_launch";//direcciona
+                            window.open('https://etbcolombia.custhelp.com/app/chat/chat_launch', '_blank');
+                        }
+                        else {
+
+                            $(".btn-closebuy1").click(function () {
+                                $(".buyDatos1").fadeOut(600);
+                            });
+
+                            //$(".getdatchat").click(function () {
+                            $(".buyDatos1").fadeIn(600);
+                            var URL = $(this).attr('rel');
+                            $('#localscene1').attr('src', URL);
+                            //});
+                            //window.location = "https://etb.com/chat_off/chat_off.aspx?origen=Negocios";//direcciona
+                        }
+                    }
+                    else {
+                        if (((d.getHours()) >= 8) && ((d.getHours()) <= 17)) {
+                            // window.location = "https://etbcolombia.custhelp.com/app/chat/chat_launch";//direcciona
+                            window.open('https://etbcolombia.custhelp.com/app/chat/chat_launch', '_blank');
+                        }
+                        else {
+                            $(".btn-closebuy1").click(function () {
+                                $(".buyDatos1").fadeOut(600);
+                            });
+
+                            //$(".getdatchat").click(function () {
+                            $(".buyDatos1").fadeIn(600);
+                            var URL = $(this).attr('rel');
+                            $('#localscene1').attr('src', URL);
+                            //});
+                            //window.location = "https://etb.com/chat_off/chat_off.aspx?origen=Negocios";//direcciona
+                        }
+                    }
+                }
+            }
+
+            //-------------------------------------------------------------Moviles-------------------------------------------------------------//
+            if (URL.indexOf("Moviles1") > -1) {
+                var d = new Date();
+                var festivos = ['6/10/2017', '13/10/2017', '8/11/2017', '25/11/2017', '1/0/2018', '8/0/2018', '19/2/2018', '29/2/2018', '30/2/2018', '1/4/2018', '14/4/2018', '4/5/2018', '11/5/2018', '2/6/2018', '20/6/2018', '7/7/2018', '20/7/2018', '15/9/2018', '5/10/2018', '12/10/2018', '25/11/2018']; //festivos
+                var e = (d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear()); //fecha actual
+                //calcula festivos
+                for (var x = 0; x < festivos.length; x++) {
+                    if (festivos[x] == e) {
+                        if (((d.getHours()) >= 6) && ((d.getHours()) <= 22)) {
+                            // window.location = "https://etbcolombia.custhelp.com/app/chat/chat_launch";//direcciona
+                            window.open('https://etbcolombia.custhelp.com/app/chat/chat_launch', '_blank');
+                        }
+                        else {
+                            $(".btn-closebuy1").click(function () {
+                                $(".buyDatos1").fadeOut(600);
+                            });
+
+                            //$(".getdatchat").click(function () {
+                            $(".buyDatos1").fadeIn(600);
+                            var URL = $(this).attr('rel');
+                            $('#localscene1').attr('src', URL);
+                            //});
+                            //window.location = "https://etb.com/chat_off/chat_off.aspx?origen=M�viles";//direcciona
+                        }
+                        break;
+                    }
+                }
+                if (d.getDay() == 0) {
+                    if (((d.getHours()) >= 6) && ((d.getHours()) <= 22)) {
+                        // window.location = "https://etbcolombia.custhelp.com/app/chat/chat_launch";//direcciona
+                        window.open('https://etbcolombia.custhelp.com/app/chat/chat_launch', '_blank');
+                    }
+                    else {
+                        $(".btn-closebuy1").click(function () {
+                            $(".buyDatos1").fadeOut(600);
+                        });
+
+                        //$(".getdatchat").click(function () {
+                        $(".buyDatos1").fadeIn(600);
+                        var URL = $(this).attr('rel');
+                        $('#localscene1').attr('src', URL);
+                        //});
+                        //window.location = "https://etb.com/chat_off/chat_off.aspx?origen=M�viles";//direcciona
+                    }
+                }
+                else {
+                    if (((d.getHours()) >= 6) && ((d.getHours()) <= 22)) {
+                        // window.location = "https://etbcolombia.custhelp.com/app/chat/chat_launch";//direcciona
+                        window.open('https://etbcolombia.custhelp.com/app/chat/chat_launch', '_blank');
+                    }
+                    else {
+                        $(".btn-closebuy1").click(function () {
+                            $(".buyDatos1").fadeOut(600);
+                        });
+
+                        //$(".getdatchat").click(function () {
+                        $(".buyDatos1").fadeIn(600);
+                        var URL = $(this).attr('rel');
+                        $('#localscene1').attr('src', URL);
+                        //});
+                        //window.location = "https://etb.com/chat_off/chat_off.aspx?origen=M�viles";//direcciona
+                    }
+                }
+            }
+        });
+    }
+
+    $(".quaitem").mouseenter(function () {
+        $(".quaitem").removeClass('notcb');
+        $(".quaitem").removeClass('currentb');
+        $(this).addClass('currentb');
+        moveBan();
+        $(this).find('.showcont').fadeOut(100);
+        $(this).find('.innercont').fadeIn(100);
+
+    });
+
+    $(".quaitem").mouseleave(function () {
+        $(".quaitem").removeClass('notcb');
+        $(".quaitem").removeClass('currentb');
+
+        $(this).find('.showcont').fadeIn(100);
+        $(this).find('.innercont').fadeOut(100);
+    });
+
+    $(".btn-regu").click(function () {
+        $(".content-regu").animate({ height: "188px" }, { duration: 600, queue: false });
+    });
+
+    $(".btn-closeregu").click(function () {
+        $(".content-regu").animate({ height: "0px" }, { duration: 600, queue: false });
+    });
+
+    $(".btn-showlog").click(function () {
+        $(".cont-reg").fadeOut(300, function () {
+            $(".cont-log").fadeIn(300);
+        });
+
+        //$(".btn-showreg").removeClass('current');
+        $(".btn-showlog").addClass('current');
+    });
+
+    $(".letras").keypress(function (key) {
+        window.console.log(key.charCode)
+        if ((key.charCode < 97 || key.charCode > 122)//letras mayusculas
+            && (key.charCode < 65 || key.charCode > 90) //letras minusculas
+            && (key.charCode != 45) //retroceso
+            && (key.charCode != 241) //�
+            && (key.charCode != 209) //�
+            && (key.charCode != 32) //espacio
+            && (key.charCode != 225) //�
+            && (key.charCode != 233) //�
+            && (key.charCode != 237) //�
+            && (key.charCode != 243) //�
+            && (key.charCode != 250) //�
+            && (key.charCode != 193) //�
+            && (key.charCode != 201) //�
+            && (key.charCode != 205) //�
+            && (key.charCode != 211) //�
+            && (key.charCode != 218) //�
+
+        )
+            return false;
+    });
+
+    $(".menAdd").on('mouseover', function (e) {
+        e.preventDefault();
+        $(".menuBot").addClass("ocu-menuBot");
+        $(".menuHamb").addClass("show-menuHamb");
+    });
+    $(".menuHamb").on('mouseover', function (e) {
+        e.preventDefault();
+        $(".menuBot").addClass("ocu-menuBot");
+        $(".menuHamb").addClass("show-menuHamb");
+    });
+    $(".menAdd").on('mouseout', function (e) {
+        e.preventDefault();
+        $(".menuBot").removeClass("ocu-menuBot");
+        $(".menuBot").css('height', '0px');
+        $(".menuHamb").removeClass("show-menuHamb");
+    });
+    $(".menuHamb").on('mouseout', function (e) {
+        e.preventDefault();
+        $(".menuBot").removeClass("ocu-menuBot");
+        $(".menuBot").css('height', '0px');
+        $(".menuHamb").removeClass("show-menuHamb");
+    });
+
+
+    $(window).scroll(function () {
+        var scroll = $(window).scrollTop();
+        if (!($("body").hasClass('rpv-site'))) {
+
+            if (scroll > 200) {
+                if ($(".btn-ham").hasClass('ham-open')) {
+                    $('.links-head').stop();
+
+                    $(".btn-ham").removeClass('ham-open');
+                    $(".linktop").removeClass("openmen");
+                    $('.sub-nav').removeClass('sn-show');
+                    $(".page-nav").removeClass('pn-show');
+                    $('.links-head').removeClass('lh-full');
+
+                    $('.links-head').animate({ width: "0px" }, 1000, function () {
+                        $('.links-head').removeClass('lh-full');
+                    });
+                }
+                $('.contact-head').stop().animate({ height: "0px" }, 500, function () { });
+                $('.links-head').removeClass('lh-full');
+            }
+
+            if (scroll == 0) {
+                if (!($(".btn-ham").hasClass('ham-open'))) {
+                    $('.links-head').stop();
+
+                    $(".btn-ham").addClass('ham-open');
+                    if ($('.contact-head').hasClass('styleEmp')) {
+                        $('.links-head').animate({ width: "938px" }, 1000, function () {
+                            $('.links-head').addClass('lh-full');
+                        });
+
+                    } else {
+                        $('.links-head').animate({ width: "800px" }, 1000, function () {
+                            $('.links-head').addClass('lh-full');
+                        });
+                    }
+                }
+                $('.contact-head').stop().animate({ height: "30px" }, 500, function () { });
+            }
+        }
+        else {
+            if (scroll > 200) {
+                $('.contact-head').stop().animate({ height: "0px" }, 500, function () { });
+            }
+
+            if (scroll == 0) {
+                $('.contact-head').stop().animate({ height: "30px" }, 500, function () { });
+            }
+        }
+    });
+
+    $(".linktop").click(function (e) {
+        if (($("body").hasClass('rpv-site'))) {
+            e.preventDefault();
+            var targt = $(this);
+            relmenu = targt.attr('rel');
+            if (!(targt.hasClass("openmen"))) {
+
+                $(".linktop").removeClass("openmen");
+                targt.addClass("openmen");
+
+                $('.sub-nav').removeClass('sn-show');
+                $(".page-nav").removeClass('pn-show');
+
+                $(".pn" + relmenu).addClass('pn-show');
+            }
+            else {
+
+                $(".linktop").removeClass("openmen");
+                $('.sub-nav').removeClass('sn-show');
+                $(".page-nav").removeClass('pn-show');
+            }
+        }
+    });
+
+    $(".pa2").click(function (e) {
+        if (($("body").hasClass('rpv-site'))) {
+            e.preventDefault();
+        }
+    });
+
+    $(".dat-shows").click(function () {
+        $(".popcon").fadeIn(500);
+        $(this).find(".datshow_pop").clone().appendTo(".datapopcon");
+    });
+
+    $(".popcon-cerrar").click(function () {
+        $(".popcon").fadeOut(500, function () {
+            $(this).parent().find(".datapopcon").empty();
+        });
+    });
+
+    $(".chatbot-float-pratech").mouseenter(function () {
+        $('.text-chatbot').animate({ width: "180px" }, 600, function () {
+            Hidemax();
+        });
+    });
+
+    $(".close-pomei").click(function () {
+        $(".popupIMEI").fadeOut(400);
+    });
+
+    $(".click-pomei").click(function () {
+        $(".popupIMEI").fadeOut(400);
+    });
+});
+
+function Inicio() {
+
+    tamWidth = $(window).width();
+    tamHeight = $(window).height();
+
+    if (tamWidth >= 740) {
+        $(".slickbanner").css('min-height', ((tamHeight - 70) * 0.80));
+        $(".slidebanner").css('min-height', ((tamHeight - 70) * 0.70));
+        $(".contentx").height((tamHeight - 100));
+
+        $("body").removeClass('rpv-site');
+        $("body").removeClass('rpv-mobile');
+    }
+    else if (tamWidth < 740) {
+
+        $(".slickbanner").css('min-height', ((tamHeight - 65) * 1));
+        $(".slidebanner").css('min-height', ((tamHeight - 65) * 1));
+        $(".contentx").height((tamHeight - 100));
+
+        $("body").addClass('rpv-site');
+        $("body").addClass('rpv-mobile');
+        $(".links-head").removeClass('lh-full');
+        $(".btn-ham").removeClass('ham-open');
+    }
+
+    $(".page-nav li").each(function () {
+        if ($(this).find('.sub-nav').length) {
+            $(this).addClass('pn-sn');
+        }
+    });
+
+    LoadingScreen();
+    idleMax();
+    Ubicator();
+}
+
+function Banners() {
+
+    $('#mainb').slick({
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 8000,
+        adaptiveHeight: true,
+        arrows: false,
+        dots: true
+    });
+
+    $('#mainb2').slick({
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 8000,
+        adaptiveHeight: true,
+        arrows: false
+    });
+
+    $('.hour_content').slick({
+        infinite: false,
+        slidesToShow: 10,
+        slidesToScroll: 4,
+        autoplay: false,
+        adaptiveHeight: true,
+        arrows: true
+    });
+
+    $("#mainregu").responsiveSlides({
+        auto: true,             // Boolean: Animate automatically, true or false
+        speed: 500,            // Integer: Speed of the transition, in milliseconds
+        timeout: 6000,          // Integer: Time between slide transitions, in milliseconds
+        pager: true,           // Boolean: Show pager, true or false
+        nav: false,             // Boolean: Show navigation, true or false
+        random: false,          // Boolean: Randomize the order of the slides, true or false
+        pause: true,           // Boolean: Pause on hover, true or false
+        pauseControls: true,    // Boolean: Pause when hovering controls, true or false
+        prevText: "Previous",   // String: Text for the "previous" button
+        nextText: "Next",       // String: Text for the "next" button
+        maxwidth: "",           // Integer: Max-width of the slideshow, in pixels
+        navContainer: "",       // Selector: Where controls should be appended to, default is after the 'ul'
+        manualControls: "",     // Selector: Declare custom pager navigation
+        namespace: "rslidesh",   // String: Change the default namespace used
+        before: function () { },   // Function: Before callback
+        after: function () { }     // Function: After callback
+    });
+
+}
+
+function moveBan() {
+    $('.quaitem').each(function () {
+        if (!($(this).hasClass('currentb'))) {
+            $(this).addClass('notcb');
+        }
+    });
+
+}
+
+function mostrar(enla) {
+    obj = document.getElementById('oculto');
+    obj.style.display = (obj.style.display == 'none') ? 'block' : 'none';
+    //enla.innerHTML = (enla.innerHTML == '-') ? '+' : '-';-->
+}
+
+function LoadingScreen() {
+    var myVar;
+    var rngT;
+    rngT = Math.floor((Math.random() * 1200) + 500);
+    myVar = setTimeout(ShowPage, rngT);
+}
+
+function ShowPage() {
+    $(".loader").fadeOut(100, function () {
+        //$('.video-estrenos1')[0].play();
+    });
+}
+
+function putMark(plac) {
+    var voyp = "#lk-" + plac;
+    $(voyp).addClass('crtsite');
+}
+$(function () {
+    //  $('#cuadrocarol').fadeOut('slow'); // Si le pone hide no no mostrara el cuadro, lo desactiva
+    // $('#mascaracarol').fadeOut('slow'); // Si le pone hide lo desactiva
+    $('#mascaracarol, #cerrarcarol').click(function () {
+        $('#cuadrocarol').fadeOut('slow');
+        $('#mascaracarol').fadeOut('slow');
+        $('.video-estrenos1')[0].pause();
+    });
+})
+function clo() {
+    $('#cuadrocarol').fadeOut('slow'); // Si le pone hide no no mostrara el cuadro, lo desactiva
+    $('#mascaracarol').fadeOut('slow'); // Si le pone hide lo desactiva
+}
+//Esto es por si se quiere llamar desde un javascript pero no es necesario
+function abrircarolbox() {
+    $('#cuadrocarol').show();
+    $('#mascaracarol').show();
+    // $('#cuadrocarol').fadeIn('slow');
+    // $('#mascaracarol').fadeIn('slow');
+    // $('#contenidocarol').html($(this).children().html());
+}
+
+(function ($) {
+    var ANIMATION_DURATION = 150;
+
+    function Popper(element) {
+        this.element = $(element);
+        this.primary = this.element.find('[data-primary]');
+        this.poppers = this.element.find(':not([data-primary])');
+
+        this.primary.on('click', this.primaryClicked.bind(this));
+        this.primary.on('mouseenter', this.primaryHover.bind(this));
+        this.element.addClass('popper-container');
+        this.poppers.addClass('secondary');
+        this.primary.addClass('primary');
+        this.hidePoppers(true);
+    }
+
+    Popper.prototype.getPoppersStartingPosition = function () {
+        return {
+            left: Math.abs(this.primary.position().left + (this.primary.width() / 2)),
+            top: Math.abs(this.primary.position().top + (this.primary.height() / 2))
+        };
+    };
+
+    Popper.prototype.hidePoppers = function (noAnimation) {
+        var position = this.getPoppersStartingPosition();
+        if (noAnimation) {
+            this.poppers.each(function () {
+                $(this).css({
+                    left: position.left - ($(this).width() / 2),
+                    top: position.top - ($(this).height() / 2)
+                });
+            });
+        } else {
+            this.poppers.each(function (index) {
+                $(this).stop().delay(index * (ANIMATION_DURATION / 3)).animate({
+                    left: position.left - ($(this).width() / 2),
+                    top: position.top - ($(this).width() / 2)
+                }, {
+                        duration: ANIMATION_DURATION * 3,
+                        easing: 'easeInBack',
+                    });
+            });
+        }
+        this.element.removeClass('popped');
+    };
+
+    Popper.prototype.showPoppers = function () {
+        this.element.addClass('popped');
+        this.poppers.show();
+        this.positionPoppers();
+    };
+
+    Popper.prototype.positionPoppers = function () {
+        var radius = 90,
+            angle = 2.35,
+            step = ((2 * Math.PI) / this.poppers.length) / 3;
+
+        var position = this.getPoppersStartingPosition(),
+            elementW = this.element.width(),
+            elementH = this.element.height();
+        this.poppers.each(function (index) {
+            var width = $(this).width(),
+                height = $(this).height(),
+                deltaWidth = (elementW / 2) - ($(this).width() / 2),
+                deltaHeight = (elementH / 2) - ($(this).height() / 2),
+                x = Math.round(width + radius * Math.cos(angle) - deltaWidth / 2),
+                y = Math.round(height + radius * Math.sin(angle) - deltaHeight / 2);
+
+
+            $(this).delay(index * (ANIMATION_DURATION / 3)).animate({
+                left: x + 'px',
+                top: y - 10 + 'px'
+            }, {
+                    duration: ANIMATION_DURATION,
+                    easing: 'easeOutBack'
+                });
+            angle += step;
+        });
+    };
+
+    Popper.prototype.primaryClicked = function () {
+        if (this.element.hasClass('popped')) {
+            this.hidePoppers();
+        } else {
+            this.showPoppers();
+        }
+    };
+
+    Popper.prototype.primaryHover = function () {
+        if (this.element.hasClass('popped')) {
+            this.hidePoppers();
+        } else {
+            this.showPoppers();
+        }
+    };
+
+
+    $.fn.popper = function (options) {
+        return this.each(function () {
+            var popper = new Popper(this);
+            $(this).attr('popper', popper);
+        });
+    };
+})(jQuery);
+
+
+//Inicio Popup inactivo --------------
+var IDLE_TIMEOUT = 5; //seconds
+
+function validainactivo() {
+    $.ajax({
+        type: "POST",
+        url: "../inicio.aspx/DecisionAyuda",
+        data: '{valor: ""}',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        failure: function (response) {
+            alertify.alert(response.d);
+        }
+    });
+}
+
+//Valida inactividad
+var _idleSecondsCounter = 0;
+document.onclick = function () {
+    _idleSecondsCounter = 0;
+};
+document.onmousemove = function () {
+    _idleSecondsCounter = 0;
+};
+document.onkeypress = function () {
+    _idleSecondsCounter = 0;
+};
+window.setInterval(CheckIdleTime, 1000);
+
+//Muestra la alerta
+function CheckIdleTime() {
+    _idleSecondsCounter++;
+    if (_idleSecondsCounter >= IDLE_TIMEOUT) {
+        //$('#mascaracarolinactivo').show();
+        $('#mensajeinactivo').show(700);
+    }
+}
+
+//Valida el boton de si o no
+$(function () {
+    //Boton de NO
+    $('#mascaracarolinactivo, #cerrarbotom').click(function () {
+        $('#mensajeinactivo').fadeOut('slow');
+        //$('#mascaracarolinactivo').fadeOut('slow');
+        $.ajax({
+            type: "POST",
+            url: "../inicio.aspx/DecisionAyuda",
+            data: '{valor: "NO"}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            failure: function (response) {
+                alertify.alert(response.d);
+            }
+        });
+    });
+
+    //Boton de SI
+    $('#directchatinactivo').click(function () {
+        window.open('http://etbcolombia--tst1.custhelp.com/app/chat/chat_launch/chat/proactivechat', '_blank');
+        $('#mensajeinactivo').fadeOut('slow');
+        //$('#mascaracarolinactivo').fadeOut('slow');
+        $.ajax({
+            type: "POST",
+            url: "../inicio.aspx/DecisionAyuda",
+            data: '{valor: "SI"}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            failure: function (response) {
+                alertify.alert(response.d);
+            }
+        });
+    });
+});
+//Fin Popup inactivo --------------
+
+
+function Hidemax() {
+    setTimeout(function () {
+        $('.text-chatbot').fadeOut('fast', function () {
+            $('.text-chatbot').css('width', '0px').show();
+        });
+    }, 20000);
+}
+
+function idleMax() {
+    var t;
+    window.onload = resetTimer;
+    window.onmousemove = resetTimer;
+    window.onmousedown = resetTimer;  // catches touchscreen presses as well      
+    window.ontouchstart = resetTimer; // catches touchscreen swipes as well 
+    window.onclick = resetTimer;      // catches touchpad clicks as well
+    window.onkeypress = resetTimer;
+    window.addEventListener('scroll', resetTimer, true); // improved; see comments
+
+    function callMax() {
+        $('.text-chatbot').animate({ width: "180px" }, 600, function () {
+            Hidemax();
+        });
+    }
+
+    function resetTimer() {
+        clearTimeout(t);
+        t = setTimeout(callMax, 12000);  // time is in milliseconds
+    }
+}
+
+function Ubicator() {
+    if (document.location.pathname.indexOf("/hogares/") === 0) {
+
+    }
+}
+
+//Inicio Funciones que ajustan dinamicamente el height segun su contenido
+function setIframeHeight(id) {
+    var ifrm = document.getElementById(id);
+    var doc = ifrm.contentDocument ? ifrm.contentDocument :
+        ifrm.contentWindow.document;
+    ifrm.style.visibility = 'hidden';
+    ifrm.style.height = "10px"; // reset to minimal height ...
+    // IE opt. for bing/msn needs a bit added or scrollbar appears
+    ifrm.style.height = getDocHeight(doc) + 4 + "px";
+    ifrm.style.visibility = 'visible';
+}
+
+function getDocHeight(doc) {
+    doc = doc || document;
+    // stackoverflow.com/questions/1145850/
+    var body = doc.body, html = doc.documentElement;
+    var height = Math.max(body.scrollHeight, body.offsetHeight,
+        html.clientHeight, html.scrollHeight, html.offsetHeight);
+    return height;
+}
+//fin Funciones Iframe

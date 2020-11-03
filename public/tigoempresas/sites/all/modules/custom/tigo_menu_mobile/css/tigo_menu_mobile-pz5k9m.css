@@ -1,0 +1,1 @@
+#mmenu-mobile,#page,#mm-blocker{-webkit-transition:all 0.5s ease;-moz-transition:all 0.5s ease;-o-transition:all 0.5s ease;transition:all 0.5s ease}body.mm-opening #page{-webkit-transform:translate(80%,0px);-moz-transform:translate(80%,0px);-o-transform:translate(80%,0px);-ms-transform:translate(80%,0px);transform:translate(80%,0px)}

@@ -1,0 +1,328 @@
+﻿var origen = "Sin-Plan";
+var tipoTel = "FIJA";
+var respC2C;
+var pagina;
+
+var mail = "n@n.nn";
+var cel;
+var nombre = "ClienteETB";
+var tipoTelefonia;
+var servicio;
+var fecha;
+
+function ShowLoader() {
+    $(".loader")[0].style.display = 'block';
+}
+
+function HideLoader() {
+    $(".loader")[0].style.display = 'none';
+}
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+
+
+function AjaxGuarda(promobanerH, tipotelH, celH, chkauto) {
+    ShowLoader();
+    cel = celH;
+    tipoTel = tipotelH;
+    var arrayPromo = promobanerH.split("/");
+    mail = cel + "@123456.com";
+    nombre = arrayPromo[1] + cel;
+    $.ajax({
+        type: "POST",
+        url: "" + ctcPagina.value + ".aspx/ActivaInsert",
+        data: "{ \"celR\":\"" + cel + "\", \"promobanerH\":\"" + arrayPromo[0] + "\"," +
+            "\"tipotelH\":\"" + tipotelH + "\", \"chkauto\":\"" + chkauto + "\"," +
+            "\"utm_source\":\"" + arrayPromo[1] + "\", \"utm_medium\":\"" + arrayPromo[2] + "\"," +
+            "\"utm_campaign\":\"" + arrayPromo[3] + "\" }",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (resp) {
+            if (resp.d.includes('Estimado usuario,')) {
+                EnvioAlerta(resp.d);
+            }
+            else {
+                EnvioC2C(resp.d, arrayPromo[0], tipotelH, chkauto);
+            }
+        },
+        failure: function (error) {
+            EnvioAlerta('Estimado usuario, ocurri\u00F3 un error en el registro. Por favor intente m\u00E1s tarde.');
+        }
+    });
+}
+
+//Inicio Envio C2C
+function EnvioC2C(id, promobanerH, tipotelH, chkauto) {
+
+    //Inicio Fecha Actual
+    var date = new Date();
+    var aaaa = date.getUTCFullYear();
+    var gg = date.getUTCDate();
+    var mm = (date.getUTCMonth() + 1);
+
+    if (gg < 10)
+        gg = "0" + gg;
+
+    if (mm < 10)
+        mm = "0" + mm;
+
+    var cur_day = aaaa + "-" + mm + "-" + gg;
+
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var seconds = date.getSeconds();
+
+    if (hours < 10)
+        hours = "0" + hours;
+
+    if (minutes < 10)
+        minutes = "0" + minutes;
+
+    if (seconds < 10)
+        seconds = "0" + seconds;
+    fecha = cur_day + " " + hours + ":" + minutes + ":" + seconds;
+    //Fin Fecha Actual
+
+    if (tipoTel === "HOGARES") {
+        tipoTelefonia = "1";
+        servicio = "960009005";
+    }
+	if (tipoTel === "NEGOCIOS") {
+        tipoTelefonia = "1";
+        servicio = "960004036";
+    }
+    if (tipoTel === "MOVIL") {
+        tipoTelefonia = "2";
+        servicio = "960004016";
+    }
+
+    if (promobanerH !== null && promobanerH !== "") {
+        origen = promobanerH;
+    }
+
+    if (getParameterByName('utm_campaign') !== null && getParameterByName('utm_campaign') === "zonawifi") {
+
+        $.ajax({
+            type: "POST",
+            url: "landing.Master/ActivaInsert",
+            data: "{ \"celR\":\"" + cel + "\", \"promobanerH\":\"" + promobanerH + "\"," +
+                "\"tipotelH\":\"" + tipotelH + "\", \"chkauto\":\"" + chkauto + "\", \"respR\":\"" + resp + "\" }",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (resp) {
+                if (resp.d === "1") {
+                    otrasFuntion(cel, nombre, mail);
+                }
+                else {
+                    EnvioAlerta(resp.d);
+                }
+            },
+            failure: function (resp) {
+                EnvioAlerta(resp.d);
+            }
+        });
+
+    }
+    else {
+
+        var respgetToken_ = $("#HiddenField1").val();
+
+        if (respgetToken_ !== null) {
+            var Token = 'Bearer ' + respgetToken_;
+
+            $.ajax({
+                type: "POST",
+                url: "https://services.emergiacc.com/WSLeads/lead/insertar?" +
+                    "cliente=1" + //
+                    "&email=" + mail +
+                    "&proveedor=1" + //
+                    "&categoriaOrigen=1" +
+                    "&servicio=" + servicio + //
+                    "&centro=CN" + //
+                    "&telefono=" + cel +
+                    "&producto=" + tipoTel +
+                    "&categoriaLead1=" + origen +
+                    "&categoriaLead2=N/D" +
+                    "&nombreCompleto=" + nombre +
+                    "&familiaCliente=1" + //
+                    "&fecha=" + fecha +
+                    "&informacionExtra=" +
+                    "{ " +
+                    "\"tipoTelefonia\" : \"" + tipoTelefonia + "\"," +
+                    "\"tipoLlamada\" : \"1\"," +
+                    "\"fechaLlamadaProgramada\" : \"" + fecha + "\"," +
+                    "\"segmento\" : \"" + servicio + "\"," +
+                    "\"id_backlanding\" : \"" + id + "\"," +
+                    "\"referenciador\" : \"" + "ORGANICO" + "\"" +
+                    " }",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', Token);
+                },
+                success: function (resp) {
+                    ActualizaBase(id, resp.MensajeError);
+                },
+                error: function (error) {
+                    ActualizaBase(id, error.responseJSON.MensajeError);
+                }
+            });
+        }
+        else {
+            EnvioAlerta('Estimado usuario, ocurri\u00F3 un error en el registro. Por favor intente m\u00E1s tarde.');
+        }
+    }
+}
+
+function ActualizaBase(id, resp) {
+    $.ajax({
+        type: "POST",
+        url: "" + ctcPagina.value + ".aspx/GuardaRespCTC",
+        data: "{ \"id\":\"" + id + "\", \"resp\":\"" + resp + "\" }",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (resp) {
+            if (resp.d === "ok") {
+                otrasFuntion(cel, nombre, mail);
+            }
+            else {
+                EnvioAlerta(resp.d);
+            }
+        },
+        failure: function (resp) {
+            EnvioAlerta(resp.d);
+        }
+    });
+}
+
+function otrasFuntion(cel, nombre, mail) {
+    EnvioAlerta('¡Registro exitoso! Pronto nos comunicaremos contigo.');
+
+    var plainText = cel;
+    var md = forge.md.sha256.create();
+    md.start();
+    md.update(plainText, "utf8");
+    var hashText = md.digest().toHex();
+	
+	// bk_allow_multiple_calls=true;
+
+    // bk_addPageCtx('p_id_s', hashText);
+    // bk_doJSTag(83781, 1);
+
+    // bk_addPageCtx('boton', 'TeLlamamos-' + origen);
+    // bk_doJSTag(83513, 1);
+	
+    insertarDatosEnMatomo(cel, nombre, mail);
+    LimpiaCampos();
+    //redirectGracias();
+}
+
+function EnvioAlerta(msm) {
+    LimpiaCampos();
+    HideLoader();
+    alertify.alert(msm);
+}
+
+function LimpiaCampos() {
+    var txtCelular1 = document.getElementById('ContentPlaceHolder1_txtCelular1');
+    var txtCelular2 = document.getElementById('ContentPlaceHolder1_txtCelular2');
+    var txtCelular3 = document.getElementById('ContentPlaceHolder1_txtCelular3');
+    var txtCelular4 = document.getElementById('ContentPlaceHolder1_txtCelular4');
+    var txtCelular5 = document.getElementById('ContentPlaceHolder1_txtCelular5');
+    var txtCelular6 = document.getElementById('ContentPlaceHolder1_txtCelular6');
+    var chkAutorizo1 = document.getElementById('ContentPlaceHolder1_chkAutorizo1');
+    var chkAutorizo2 = document.getElementById('ContentPlaceHolder1_chkAutorizo2');
+    var chkAutorizo3 = document.getElementById('ContentPlaceHolder1_chkAutorizo3');
+    var chkAutorizo4 = document.getElementById('ContentPlaceHolder1_chkAutorizo4');
+    var chkAutorizo5 = document.getElementById('ContentPlaceHolder1_chkAutorizo5');
+    var chkAutorizo6 = document.getElementById('ContentPlaceHolder1_chkAutorizo6');
+    if (txtCelular1 !== null) {
+        ContentPlaceHolder1_txtCelular1.value = "";
+    }
+    if (txtCelular2 !== null) {
+        ContentPlaceHolder1_txtCelular2.value = "";
+    }
+    if (txtCelular3 !== null) {
+        ContentPlaceHolder1_txtCelular3.value = "";
+    }
+    if (txtCelular4 !== null) {
+        ContentPlaceHolder1_txtCelular4.value = "";
+    }
+    if (txtCelular5 !== null) {
+        ContentPlaceHolder1_txtCelular5.value = "";
+    }
+    if (txtCelular6 !== null) {
+        ContentPlaceHolder1_txtCelular6.value = "";
+    }
+    if (chkAutorizo1 !== null) {
+        ContentPlaceHolder1_chkAutorizo1.checked = false;
+    }
+    if (chkAutorizo2 !== null) {
+        ContentPlaceHolder1_chkAutorizo2.checked = false;
+    }
+    if (chkAutorizo3 !== null) {
+        ContentPlaceHolder1_chkAutorizo3.checked = false;
+    }
+    if (chkAutorizo4 !== null) {
+        ContentPlaceHolder1_chkAutorizo4.checked = false;
+    }
+    if (chkAutorizo5 !== null) {
+        ContentPlaceHolder1_chkAutorizo5.checked = false;
+    }
+    if (chkAutorizo6 !== null) {
+        ContentPlaceHolder1_chkAutorizo6.checked = false;
+    }
+    var ttxtCelular1 = document.getElementById('ContentPlaceHolder1_ContentPlaceHolder1_txtCelular1');
+    var ttxtCelular2 = document.getElementById('ContentPlaceHolder1_ContentPlaceHolder1_txtCelular2');
+    var ttxtCelular3 = document.getElementById('ContentPlaceHolder1_ContentPlaceHolder1_txtCelular3');
+    var ttxtCelular4 = document.getElementById('ContentPlaceHolder1_ContentPlaceHolder1_txtCelular4');
+    var ttxtCelular5 = document.getElementById('ContentPlaceHolder1_ContentPlaceHolder1_txtCelular5');
+    var ttxtCelular6 = document.getElementById('ContentPlaceHolder1_ContentPlaceHolder1_txtCelular6');
+    var cchkAutorizo1 = document.getElementById('ContentPlaceHolder1_ContentPlaceHolder1_chkAutorizo1');
+    var cchkAutorizo2 = document.getElementById('ContentPlaceHolder1_ContentPlaceHolder1_chkAutorizo2');
+    var cchkAutorizo3 = document.getElementById('ContentPlaceHolder1_ContentPlaceHolder1_chkAutorizo3');
+    var cchkAutorizo4 = document.getElementById('ContentPlaceHolder1_ContentPlaceHolder1_chkAutorizo4');
+    var cchkAutorizo5 = document.getElementById('ContentPlaceHolder1_ContentPlaceHolder1_chkAutorizo5');
+    var cchkAutorizo6 = document.getElementById('ContentPlaceHolder1_ContentPlaceHolder1_chkAutorizo6');
+    if (ttxtCelular1 !== null) {
+        ContentPlaceHolder1_ContentPlaceHolder1_txtCelular1.value = "";
+    }
+    if (ttxtCelular2 !== null) {
+        ContentPlaceHolder1_ContentPlaceHolder1_txtCelular2.value = "";
+    }
+    if (ttxtCelular3 !== null) {
+        ContentPlaceHolder1_ContentPlaceHolder1_txtCelular3.value = "";
+    }
+    if (ttxtCelular4 !== null) {
+        ContentPlaceHolder1_ContentPlaceHolder1_txtCelular4.value = "";
+    }
+    if (ttxtCelular5 !== null) {
+        ContentPlaceHolder1_ContentPlaceHolder1_txtCelular5.value = "";
+    }
+    if (ttxtCelular6 !== null) {
+        ContentPlaceHolder1_ContentPlaceHolder1_txtCelular6.value = "";
+    }
+    if (cchkAutorizo1 !== null) {
+        ContentPlaceHolder1_ContentPlaceHolder1_chkAutorizo1.checked = false;
+    }
+    if (cchkAutorizo2 !== null) {
+        ContentPlaceHolder1_ContentPlaceHolder1_chkAutorizo2.checked = false;
+    }
+    if (cchkAutorizo3 !== null) {
+        ContentPlaceHolder1_ContentPlaceHolder1_chkAutorizo3.checked = false;
+    }
+    if (cchkAutorizo4 !== null) {
+        ContentPlaceHolder1_ContentPlaceHolder1_chkAutorizo4.checked = false;
+    }
+    if (cchkAutorizo5 !== null) {
+        ContentPlaceHolder1_ContentPlaceHolder1_chkAutorizo5.checked = false;
+    }
+    if (cchkAutorizo6 !== null) {
+        ContentPlaceHolder1_ContentPlaceHolder1_chkAutorizo6.checked = false;
+    }
+}
+//Fin Envio C2C

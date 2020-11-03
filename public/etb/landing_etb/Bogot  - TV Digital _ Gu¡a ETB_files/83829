@@ -1,0 +1,30 @@
+var bk_results = {
+ "campaigns": [
+  {
+    "campaign": 491107,
+    "AttributeName": "TodoBluekai",
+    "AttributeValue": "Todito",
+    "Priority": "1",
+    "timestamp": 1598374946,
+    "categories": [
+    {
+     "categoryID": 1717270,
+     "timestamp": 1598374914
+    }
+    ]
+  },
+  {
+    "campaign": 438957,
+    "AttributeName": "Mypes2fibra_N",
+    "AttributeValue": "SI",
+    "Priority": "1",
+    "timestamp": 1598374946,
+    "categories": [
+    {
+     "categoryID": 1679134,
+     "timestamp": 1596719778
+    }
+    ]
+  }
+ ]
+};

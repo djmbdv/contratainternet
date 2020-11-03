@@ -23,13 +23,13 @@
  // define( 'WP_SITEURL', 'http://127.0.0.1:8000/blog' );
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define( 'DB_NAME', 'wp_intercolombia' );
+define( 'DB_NAME', 'remotepc_contratainternet_wp' );
 
 /** MySQL database username */
-define( 'DB_USER', 'root' );
+define( 'DB_USER', 'remotepc' );
 
 /** MySQL database password */
-define( 'DB_PASSWORD', 'U9T9sR8XDCHMeE' );
+define( 'DB_PASSWORD', 'vtc27eK92N' );
 // define( 'DB_PASSWORD', '' );
 
 /** MySQL hostname */

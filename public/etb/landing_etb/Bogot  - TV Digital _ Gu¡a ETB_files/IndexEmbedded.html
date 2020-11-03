@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)https://mietb.app.etb.co/Home/IndexEmbedded -->
+<html style="" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms no-csstransforms3d csstransitions fontface no-generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Cache-Control" content="no-store">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="expires" content="Fri, 05 Oct 2018 11:10:00 GMT">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>MI ETB - Ingreso usuario</title>
+
+    <link href="./styles.css" rel="stylesheet">
+    <link href="./bootstrap.min.css" rel="stylesheet">
+    <link href="./bootstrap-datetimepicker.css" rel="stylesheet">
+    <!-- DataTables -->
+    <link href="./dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="./responsive.bootstrap.css" rel="stylesheet">
+
+    <script type="text/javascript" async="" src="./wtid.js.descarga"></script><script type="text/javascript" async="" src="./js"></script><script type="text/javascript" async="" src="./js(1)"></script><script type="text/javascript" async="" src="./analytics.js.descarga"></script><script type="text/javascript" async="" src="./analytics.js.descarga"></script><script async="" src="./gtm.js.descarga"></script><script type="text/javascript" async="" src="./recaptcha__es.js.descarga"></script><script src="./jquery-1.11.1.min.js.descarga"></script>
+    <script src="./bootstrap.min.js.descarga"></script>
+    <script src="./modernizr-2.8.3.js.descarga"></script>
+    <script src="./moment-with-locales.min.js.descarga"></script>
+    <script src="./bootstrap-datetimepicker.min.js.descarga"></script>
+    <script src="./functions.js.descarga"></script>
+    <script src="./jquery.svgmagic.js.descarga"></script>
+    <!-- JQueryDataTables -->
+    <script src="./jquery.dataTables.min.js.descarga"></script>
+    <script src="./dataTables.bootstrap.min.js.descarga"></script>
+    <script src="./dataTables.responsive.min.js.descarga"></script>
+    <!-- reCaptcha -->
+    <script src="./api.js.descarga"></script>
+    <!-- Eliminación de cookies -->
+    <script src="./jquery.cookie.js.descarga"></script>
+
+    <style>
+        .modal-backdrop {
+            opacity: .5;
+        }
+    </style>
+    <script>(function (w, d, s, l, i) { w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' }); var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f); })(window, document, 'script', 'dataLayer', 'GTM-TDKHGJC');</script>
+<script type="text/javascript" src="./common.js.descarga" async="true" defer="true"></script><script type="text/javascript" src="./analytics.js(1).descarga" async="true" defer="true"></script><script type="text/javascript" charset="UTF-8" src="./common.js(1).descarga"></script><script type="text/javascript" charset="UTF-8" src="./util.js.descarga"></script><script type="text/javascript" charset="UTF-8" src="./AuthenticationService.Authenticate"></script></head>
+
+
+<body class="">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TDKHGJC" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div class="mi-etb-Master hidden-interface">
+        <div class="header">
+            <header>
+
+                        <div class="logo">
+                            <div class="row bg-blue text-center">
+                                <a href="https://mietb.app.etb.co/Cliente/MisProductos" class="h-logo" title="Regresar a la pantalla de inicio">
+                                    <img src="./img_logo_etb.png" alt="Logo ETB">
+                                </a>
+                            </div>
+                        </div>
+
+                <div class="top-bar">
+                    <div class="h-menu-button">
+                        <a href="https://mietb.app.etb.co/Home/IndexEmbedded#" title="Abrir menú principal" role="button" onclick="pushMenu();">Menú principal</a>
+                    </div>
+                    <div class="display-inline bg-white hidden-xs">
+                        <!-- search form -->
+                        <div class="tb-search hidden">
+    <label for="search" class="sr-only">Buscar</label>
+    <input type="email" class="form-control" id="search" placeholder="Buscar...">
+</div>
+
+                        <div class="tb-cerrar-sesion pull-right small">
+                            
+<a href="https://mietb.app.etb.co/Home/IndexEmbedded#" onclick="cerrarSesion();">Cerrar Sesión</a>
+
+<script>
+    function cerrarSesion() {
+        $.ajax({
+            url: "/Home/CerrarSesion",
+            cache: false,
+            dataType: "json",
+            type: "POST",
+            success: function (result) {
+                if (result.Result) {
+                    if (result.Response.Context == "Movil") {
+                        location.href = "/Home/IndexMovil?cierreSesion=1&remindMe=" + result.Response.Remind_Me + "&mail=" + result.Response.Mail + "&password=" + result.Response.Password+"&deviceId="+result.Response.DeviceId+"&os="+result.Response.OS+"&version="+result.Response.Version;
+                    }
+                    else {
+                        location.href = "https://etb.com/mietb.aspx";
+                    }  
+                } else {
+                    location.href = "/Mensajes/MensajeErrorAutenticado";
+                }
+                $("#modalSpinner").modal('hide');
+            },
+            error: function (result) {
+                location.href = "/Mensajes/MensajeErrorAutenticado";
+                $("#modalSpinner").modal('hide');
+            }
+        });
+    }
+</script>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="global-container">
+            <!-- menu-bar hidden-xs-->
+            <div class="menu-bar hidden-xs">
+                <div class="menu-bar-content">
+                    <!-- Sidebar user panel -->
+                    
+
+
+<div class="mb-user-log bg-blue-dark display-inline">
+    <div class="col-xs-12">
+        <p>Bienvenido a Mi ETB</p>
+        <div class="mb-user-name">
+        </div>
+        <ul class="mb-user-menu small text-center list-unstyled display-inline">
+            <li class="mb-usuario">
+                <a href="https://mietb.app.etb.co/Cliente/Edicion">Usuario</a>
+            </li>
+            <li class="mb-mensajes">
+                <a href="https://mietb.app.etb.co/Cliente/Mensajes">Mensajes</a>
+            </li>
+
+            <!--<li class="mb-anadir-cuenta">
+        <a href="#">Añadir Cuenta</a>
+    </li>-->
+            <li class="mb-cerrar-sesion">
+                
+<a href="https://mietb.app.etb.co/Home/IndexEmbedded#" onclick="cerrarSesion();">Cerrar Sesión</a>
+
+<script>
+    function cerrarSesion() {
+        $.ajax({
+            url: "/Home/CerrarSesion",
+            cache: false,
+            dataType: "json",
+            type: "POST",
+            success: function (result) {
+                if (result.Result) {
+                    if (result.Response.Context == "Movil") {
+                        location.href = "/Home/IndexMovil?cierreSesion=1&remindMe=" + result.Response.Remind_Me + "&mail=" + result.Response.Mail + "&password=" + result.Response.Password+"&deviceId="+result.Response.DeviceId+"&os="+result.Response.OS+"&version="+result.Response.Version;
+                    }
+                    else {
+                        location.href = "https://etb.com/mietb.aspx";
+                    }  
+                } else {
+                    location.href = "/Mensajes/MensajeErrorAutenticado";
+                }
+                $("#modalSpinner").modal('hide');
+            },
+            error: function (result) {
+                location.href = "/Mensajes/MensajeErrorAutenticado";
+                $("#modalSpinner").modal('hide');
+            }
+        });
+    }
+</script>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+                    <!-- search form -->
+                    <div class="mb-search form-group col-xs-12 visi ble-xs-block hidden">
+    <label for="search" class="sr-only">Buscar</label>
+    <input type="email" class="form-control" id="search" placeholder="Buscar...">
+</div>
+
+                    <!-- Sidebar Menu -->
+                    
+<nav>
+    <div class="main-menu">
+        <ul class="list-unstyled" id="collapsePortal">
+
+
+            <li class="menu-TeAyudamos menu-nested">
+                
+                <a data-toggle="collapse" data-target="#collapseAyudamos">Te Ayudamos</a>
+
+                <ul id="collapseAyudamos" class="collapse" data-parent="#collapsePortal">
+                    <li>
+                        <a href="http://etbcolombia.custhelp.com/" target="_blank">Centro de ayuda</a>
+                    </li>
+                    <li>
+                        <a href="https://etb.com/zonas-wifi-etb/" target="_blank">Información zonas Wifi</a>
+                    </li>
+                    <li>
+                        <a href="https://etb.com/info-regulatoria/contratos_opcion.aspx" target="_blank">Políticas de uso aceptable</a>
+                    </li>
+                    <li>
+                        <a href="https://etb.com/centrosexperiencia/" target="_blank">Centro de experiencia</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <!--
+        <a href="javascript:;" class="chat chatbot-pratech-floating" saludo="Hola::etbHogares">
+            <img src="https://pratech-parly-etb-view-qa.us-east.mybluemix.net/etb/images/avataraccess.png" alt="" class="img-responsive" width="80" height="57">
+            <div class="title-pratech-floating">Chat</div>
+        </a>
+        -->
+    </div>
+</nav>
+<script>
+
+    $(window).resize(function () {
+        if ($(".menu-bar.hidden-xs").length == 0) {
+            if ($(window).width() > 768) {
+                $(".h-menu-button a").css("background", "url(../images/ic_menu_sprite.png) no-repeat");
+            } else {
+                $(".h-menu-button a").css("background", "url(../images/ic_cerrar_32.png) no-repeat");
+            }
+        }
+    });
+</script>
+
+                    <div class="mb-SocialMedia col-xs-12">
+                        <!-- social media -->
+                        
+<ul class="list-unstyled text-center">
+    <li class="SM-Facebook">
+        <a href="https://www.facebook.com/ETB.Colombia">Facebook</a>
+    </li>
+    <li class="SM-Youtube">
+        <a href="https://www.youtube.com/user/ETBCorporativo">YouTube</a>
+    </li>
+    <li class="SM-Twitter">
+        <a href="https://twitter.com/ETBsoluciones">Twitter</a>
+    </li>
+    <li class="SM-Instagram">
+        <a href="https://www.instagram.com/etb_oficial/">Instagram</a>
+    </li>
+</ul>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="workspace">
+                <input id="ip" name="ip" type="hidden" value="">
+                <div class="content-fluid">
+                    <div class="row no-margin">
+                        
+
+
+<div class="breadcrumbs small col-xs-12">
+    <ul class="list-unstyled pull-left" id="path">
+        <!--<li><a href="/Cliente/MisProductos">Inicio</a></li>
+        <li>Mis productos</li>
+        <li id="path"></li>-->
+    </ul>
+    <p class="font-italic pull-right hidden-xs">
+        <span>Última visita: </span>
+        <!--<span>Abril 23, 2018 08:80:00</span>-->
+    </p>
+</div>
+
+
+                    </div>
+                    <div class="section row no-margin chat">
+                        <div class="main-content col-xs-12">
+                            <!-- Inicio de corte -->
+                            
+
+
+<style>
+    .col-xs-offset-1 {
+        margin-left: 0% !important;
+    }
+
+    .col-xs-10 {
+        width: 100% !important;
+    }
+
+    .mi-etb-Login {
+        margin-top: 0px !important;
+    }
+
+    .box-shadow {
+        box-shadow: none !important;
+        -moz-box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+    }
+
+    .main-menu {
+        visibility: hidden !important;
+    }
+</style>
+<div class="row mi-etb-Login">
+    <div class="col-xs-10 col-xs-offset-1 col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 bg-white box-shadow">
+        <h1 class="title text-center font-regular">Login</h1>
+        <p class="text-center">
+            Ingresa con tu correo electrónico.<br>
+            y tu contraseña
+        </p>
+<form action="https://mietb.app.etb.co/Home/IndexEmbedded" id="__AjaxAntiForgeryForm" method="post"><input name="__RequestVerificationToken" type="hidden" value="OppOOkY48utGEgxMiKhxSU_xTzcZ_6P-Jhzlx3eIx4-r2K1wjXDos8MEtGvTJjzG7q11xH7ojm_EhibdNZCTOgQKOFGolpJ_2Jizwtb2xk81"></form>        <form>
+            <input id="IP" name="IP" value="" hidden="">
+            <div class="form-group no-margin">
+                <label class="sr-only" for="email">Correo Electrónico</label>
+                <input class="form-control" id="Mail" name="Mail" onkeyup="if (event.keyCode == 13) Login()" placeholder="Correo electrónico" type="email" value="">
+                <span id="MailHelp" class="text-danger"></span>
+            </div>
+            <div class="form-group no-margin">
+                <label class="sr-only" for="password">Contraseña</label>
+                <input class="form-control" id="Password" name="Password" onkeyup="if (event.keyCode == 13) Login()" placeholder="Contraseña actual" type="password" value="">
+                <span id="PasswordHelp" class="text-danger"></span>
+            </div>
+            <button type="button" class="btn btn-primary btn-block btn-lg ic-key font-bold" id="btonIngresar" onclick="Login()">INGRESAR</button>
+
+            <div class="row">
+                <!--<div class="col-xs-6">
+                <button type="button" class="btn btn-default btn-sm btn-block">Recordar Usuario</button>
+                    </div>-->
+                <div class="col-xs-12">
+                    <button type="button" class="btn btn-default btn-sm btn-block" onclick="window.open(&#39;/Registro/RecuperarContrasena&#39;,&#39;_blank&#39;)">Recordar Contraseña</button>
+                </div>
+                <div class="col-xs-12 text-center">
+                    <br>
+                    <p>O ingresa con</p>
+                    <ul class="sm-login">
+                        <li>
+                            <a href="https://mietb.app.etb.co/Home/IndexEmbedded#" class="login-Google" onclick="redireccionar(&#39;GoogleAuth&#39;);">Ingresar con Google PLus</a>
+                        </li>
+                        <li>
+                            <a href="https://mietb.app.etb.co/Home/IndexEmbedded#" class="login-Facebook" onclick="redireccionar(&#39;FacebookAuth&#39;);">Ingresar con Facebook</a>
+                        </li>
+                        <li>
+                            <a href="https://mietb.app.etb.co/Home/IndexEmbedded#" class="login-Twitter" onclick="redireccionar(&#39;TwitterAuth&#39;);">Ingresar con Twitter</a>
+                        </li>
+                    </ul>
+                    <span id="TransparentHelp" style="color:transparent"></span>
+                    <!-- <p class="font-italic"><a href="/Registro/RegistroLight">Regístrate aquí</a></p> -->
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var URLsearch = window.location.search;
+
+    $(document).ready(function () {
+        var cookies = $.cookie();
+        for (var cookie in cookies) {
+            $.removeCookie(cookie);
+        }
+        $("#modalSpinner").modal('hide');
+        $("#footerDiv").hide();
+    });
+
+    function redireccionar(dir) {
+        window.top.location.href = '/Home/' + dir;
+    }
+
+
+    function Login() {
+        $("#modalSpinner").modal('show');
+        $("#modalSpinner").modal({ backdrop: 'static', keyboard: false });
+
+        var mail = $("#Mail").val();
+        var password = $("#Password").val();
+        var form = $('#__AjaxAntiForgeryForm');
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+        var continuar = false;
+
+        $("#Mail, #Password").parents(".form-group").removeClass("has-error");
+        $("#MailHelp, #PasswordHelp").text("");
+
+        if (hasFieldEmpty(mail)) {
+            addError("#Mail", "Al parecer olvidaste escribir el correo electrónico.");
+        }
+        else if (!isValidEmailAddress(mail)) {
+            addError("#Mail", "Al parecer el correo electrónico no es válido.");
+        }
+        else if (hasFieldEmpty(password)) {
+            addError("#Password", "Al parecer olvidaste escribir la contraseña.");
+        }
+        else {
+
+            // window.top.location.href = "https://mietbdev.portallteqa.p.azurewebsites.net/Home/Index?Usuario=jeogarod@gmail.com&Password=8Caracters";
+            
+            var model = {
+                Mail: mail,
+                Password: password,
+                Remind_Me: false,
+                DeviceId : null
+            }
+            $.ajax({
+                url: "/Home/Login",
+                data: {
+                    __RequestVerificationToken: token,
+                    model: JSON.stringify(model)
+                },
+                cache: false,
+                dataType: "json",
+                type: "POST",
+                timeout: 50000,
+                success: function (result) {
+                    if (result.Result) {
+                        if (URLsearch != "") {
+                            var controller = URLsearch.split("=")[1].split("%2f")[1];
+                            var metodo = URLsearch.split("=")[1].split("%2f")[2];
+                            if (typeof controller != "undefined" && typeof metodo != "undefined") {
+                                window.top.location.href = "/" + controller + "/" + metodo;
+                            //} else if (result.Response.Advance == 100) {
+                            //    window.top.location.href = "/Cliente/MisProductos";
+                            }
+                            else {
+                                window.top.location.href = "/Cliente/MisProductos";
+                            }
+                        }
+                        //else if (result.Response.Advance == 100) {
+                        //    window.top.location.href = "/Cliente/MisProductos";
+                        //}
+                        else {
+                            window.top.location.href = "/Cliente/MisProductos";
+                        }
+                        continuar = true;
+                    } else {
+                        addError("#TransparentHelp", result.Message);
+                        addError("#Mail", "Verifica que hayas escrito correctamente tu usuario y contraseña");
+                    }
+
+                },
+                error: function (xhr, status, errorThrown) {
+                    $("#modalSpinner").modal('hide');
+                    addError("#Mail", "En estos momentos no podemos autenticarte, intenta más tarde (" + errorThrown + ")");
+                }
+            });
+        }
+    }
+
+</script>
+
+                            <!-- Fin de corte-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footerDiv" name="footerDiv" class="footer font-white bg-blue-soft small" style="display: none;">
+            <footer>
+                <div class="f-text col-xs-12">
+                    <p class="pull-left">2018 © ETB S.A. ESP. Todos los derechos reservados.</p>
+
+                    <div class="f-SocialMedia pull-right hidden-xs">
+                        <!-- social media -->
+                        
+<ul class="list-unstyled text-center">
+    <li class="SM-Facebook">
+        <a href="https://www.facebook.com/ETB.Colombia">Facebook</a>
+    </li>
+    <li class="SM-Youtube">
+        <a href="https://www.youtube.com/user/ETBCorporativo">YouTube</a>
+    </li>
+    <li class="SM-Twitter">
+        <a href="https://twitter.com/ETBsoluciones">Twitter</a>
+    </li>
+    <li class="SM-Instagram">
+        <a href="https://www.instagram.com/etb_oficial/">Instagram</a>
+    </li>
+</ul>
+
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div><script type="text/javascript" id="" src="./odc.js.descarga"></script>
+<script type="text/javascript" id="" src="./83829"></script><script type="text/javascript" id="" src="./mmapi.js.descarga"></script>
+<script type="text/javascript" id="" src="./js(2)"></script>
+
+    <style>
+        .modal-dialog {
+            /**margin-top: 20% !important;*/
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .modal-content {
+            border-radius: 10px;
+            width: 100% !important;
+            height: 100% !important;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: transparent !important;
+            box-shadow: none !important;
+            border: 0px solid !important;
+        }
+
+        .modal-body {
+            padding: 0px !important;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .loader {
+            margin: 0 auto;
+            text-align: center;
+            /**position: fixed;**/
+            /**width: 100%;*/
+            /**height: 100%;*/
+            z-index: 99999999;
+            background-color: transparent !important;
+        }
+
+            .loader::after {
+                position: absolute;
+                top: calc(50% - 74px);
+                left: calc(50% - 54px);
+                transform: translate(-50%, -50%);
+                content: '';
+                border: 4px solid #7A7B7C; /* Light grey */
+                border-top: 4px solid #fff; /* Blue */
+                border-radius: 250%;
+                width: 100px;
+                height: 100px;
+                animation: spin 2s linear infinite;
+                -webkit-animation: spin 2s linear infinite;
+            }
+
+            .loader::before {
+                position: absolute;
+                top: calc(50% - 69px);
+                left: calc(50% - 49px);
+                transform: translate(-50%, -50%);
+                content: '';
+                border: 4px solid #7A7B7C; /* Light grey */
+                border-top: 4px solid #fff; /* Blue */
+                border-radius: 250%;
+                width: 90px;
+                height: 90px;
+                animation: spin 1.1s linear infinite;
+                -webkit-animation: spin 1.1s linear infinite;
+            }
+
+            .loader .logol {
+                position: absolute;
+                top: calc(50% - 20px);
+                left: calc(50% - 2px);
+                transform: translate(-50%, -50%);
+                width: 60px;
+            }
+
+        .popupMensaje {
+            background-color: #F8F8F8;
+            width: 275px;
+            border-radius: 5px;
+            margin: 0 auto;
+            padding-bottom: 10px;
+        }
+    </style>
+
+    <div loading="" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="modalSpinner" class="modal saldo_insuf_Modal" aria-hidden="true" style="display: none;">
+        <div role="document" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" style="margin:0 auto; text-align:center;">
+                    <div class="loader">
+                        <img alt="ETB" class="logol" src="./logoetb.png"><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div loading="" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="modalCompraBolsa" class="modal saldo_insuf_Modal">
+        <div role="document" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" style="margin:0 auto; text-align:center;">
+                    <div class="popupMensaje">
+                        <p style="color:#20a4cb;font-size:20px;font-weight:bold;padding:10px 0px;text-align:center; background-color:white;">INFORMACIÓN</p>
+                        <p id="txtMsgCompraModal" style="background-color:#F8F8F8;color:#20a4cb;text-align:center; padding:25px;">¿Estas seguro de continuar?</p>
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                                <button class="btn btn-sm btn-orange center block" id="btnCompraModal" name="btnCompraModal">Continuar</button>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                                <button class="btn btn-sm btn-default center block" id="btnCancelarModal" name="btnCancelarModal" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div loading="" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="modalApp" class="modal saldo_insuf_Modal">
+        <div role="document" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" style="margin:0 auto; text-align:center;">
+                    <div class="popupMensaje">
+                        <p id="txtTitleModalApp" style="color:#20a4cb;font-size:20px;font-weight:bold;padding:10px 0px;text-align:center; background-color:white;">INFORMACIÓN</p>
+                        <p id="txtMsgModalApp" style="background-color:#F8F8F8;color:#20a4cb;text-align:justify; padding:25px;"></p>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
+                                <button class="btn btn-sm btn-default center block" data-dismiss="modal">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div loading="" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="modalMensaje" class="modal saldo_insuf_Modal">
+        <div role="document" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" style="margin:0 auto; text-align:center;">
+                    <div class="popupMensaje">
+                        <p id="txtTitleModalMensaje" style="color:#20a4cb;font-size:20px;font-weight:bold;padding:10px 0px;text-align:center; background-color:white;">INFORMACIÓN</p>
+                        <p id="txtMsgModalMensaje" style="background-color:#F8F8F8;color:#20a4cb;text-align:justify; padding:25px;">¿Estas seguro de continuar?</p>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">
+                                <button class="btn btn-sm btn-default center block" data-dismiss="modal">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form style="display:none;" id="formExito" name="formExito" method="POST" action="https://mietb.app.etb.co/Mensajes/MensajeExito">
+        <input id="msgExito" name="msgExito" value="" type="text">
+        <input id="msgExitoTec" name="msgExitoTec" value="" type="text">
+        <input id="enlaceExito" name="enlaceExito" value="" type="text">
+    </form>
+
+    <form style="display:none;" id="formExitoMovil" name="formExitoMovil" method="POST" action="https://mietb.app.etb.co/Mensajes/MensajeExitoMovil">
+        <input id="msgExitoMovil" name="msgExitoMovil" value="" type="text">
+        <input id="msgExitoTecMovil" name="msgExitoTecMovil" value="" type="text">
+        <input id="enlaceExitoMovil" name="enlaceExitoMovil" value="" type="text">
+    </form>
+
+    <form style="display:none;" id="formErrorMovil" name="formErrorMovil" method="POST" action="https://mietb.app.etb.co/Mensajes/MensajeErrorMovil">
+        <input id="msgErrorMovil" name="msgErrorMovil" value="" type="text">
+        <input id="msgErrorTecMovil" name="msgErrorTecMovil" value="" type="text">
+        <input id="enlaceErrormOVIL" name="enlaceErrormOVIL" value="" type="text">
+    </form>
+
+    <form style="display:none;" id="formError" name="formError" method="POST" action="https://mietb.app.etb.co/Mensajes/MensajeError">
+        <input id="msgError" name="msgError" value="" type="text">
+        <input id="msgErrorTec" name="msgErrorTec" value="" type="text">
+        <input id="enlaceError" name="enlaceError" value="" type="text">
+    </form>
+
+    <form style="display:none;" id="formExitoAuth" name="formExitoAuth" method="POST" action="https://mietb.app.etb.co/Mensajes/MensajeExitoAutenticado">
+        <input id="msgExitoAuth" name="msgExitoAuth" value="" type="text">
+        <input id="msgExitoTecAuth" name="msgExitoTecAuth" value="" type="text">
+        <input id="enlaceExitoAuth" name="enlaceExitoAuth" value="" type="text">
+    </form>
+
+    <form style="display:none;" id="formErrorAuth" name="formErrorAuth" method="POST" action="https://mietb.app.etb.co/Mensajes/MensajeErrorAutenticado">
+        <input id="msgErrorAuth" name="msgErrorAuth" value="" type="text">
+        <input id="msgErrorTecAuth" name="msgErrorTecAuth" value="" type="text">
+        <input id="enlaceErrorAuth" name="enlaceErrorAuth" value="" type="text">
+    </form>
+
+    <script>
+
+        $(document).ajaxError(function (event, xhr, settings) {
+          if (xhr.status == 401) {
+            window.location.href = "/Home/Index";
+          }
+        });
+
+        $.getJSON('https://ipapi.co/json/', function (data) {
+            document.getElementById("ip").value = data.ip;
+        });
+
+        var menuVisible = '';
+        var path = window.location.href;
+
+        if (menuVisible != null && menuVisible != '' && menuVisible != undefined && !path.includes("IndexEmbedded")){
+            $(".mi-etb-Master").removeClass("hidden-interface");
+        }
+
+        var heightScreen = $(window).height();
+        var resultScreen = heightScreen - 70;
+        $(".global-container").css("min-height", resultScreen);
+
+       $( window ).resize(function() {
+        var heightScreen = $(window).height();
+        var resultScreen = heightScreen - 70;
+        $(".global-container").css("min-height", resultScreen);
+        });
+
+        function sendMsgExito(msg, msgTec, enlace) {
+            $("#msgExito").val(msg);
+            $("#msgExitoTec").val(msgTec);
+            $("#enlaceExito").val(enlace);
+            $("#formExito").submit();
+        }
+
+        function sendMsgExitoMovil(msg, msgTec, enlace) {
+            $("#msgExitoMovil").val(msg);
+            $("#msgExitoTecMovil").val(msgTec);
+            $("#enlaceExitoMovil").val(enlace);
+            $("#formExitoMovil").submit();
+        }
+
+        function sendMsgError(msg, msgTec, enlace) {
+            $("#msgError").val(msg);
+            $("#msgErrorTec").val(msgTec);
+            $("#enlaceError").val(enlace);
+            $("#formError").submit();
+        }
+
+        function sendMsgErrorMovil(msg, msgTec, enlace) {
+            $("#msgErrorMovil").val(msg);
+            $("#msgErrorTecMovil").val(msgTec);
+            $("#enlaceErrorMovil").val(enlace);
+            $("#formErrorMovil").submit();
+        }
+
+        $(window).bind('beforeunload', function () {
+            $("#modalSpinner").modal('show');
+            $("#modalSpinner").modal({ backdrop: 'static', keyboard: false });
+        });
+
+        function sendMsgExitoAuth(msg, msgTec, enlace) {
+            $("#msgExitoAuth").val(msg);
+            $("#msgExitoTecAuth").val(msgTec);
+            $("#enlaceExitoAuth").val(enlace);
+            $("#formExitoAuth").submit();
+        }
+
+        function sendMsgErrorAuth(msg, msgTec, enlace) {
+            $("#msgErrorAuth").val(msg);
+            $("#msgErrorTecAuth").val(msgTec);
+            $("#enlaceErrorAuth").val(enlace);
+            $("#formErrorAuth").submit();
+        }
+
+        $("#modalSpinner").modal({
+            escapeClose: false,
+            clickClose: false,
+            showClose: false
+        });
+
+        function goBack() {
+            window.history.back();
+        }
+
+        var getCookie = function (cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            } return "";
+        };
+        var cookieAuth = getCookie("BAS");
+
+    </script>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TDKHGJC" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+
+
+
+<iframe name="__bkframe" height="0" width="0" frameborder="0" style="display:none;position:absolute;clip:rect(0px 0px 0px 0px)" src="./saved_resource(2).html"></iframe>
+<script type="text/javascript" id="" src="./bk-coretag.js.descarga"></script>
+
+<script type="text/javascript" id="">function getLocation(){navigator.geolocation?navigator.geolocation.getCurrentPosition(showPosition,positionError):console.log("Geolocation is not supported by this browser.")}function showPosition(a){console.log("Your position is: "+a)}function positionError(a){a.PERMISSION_DENIED?(console.log("Error: permission denied"),showError("Geolocation is not enabled. Please enable to use this feature.")):console.log("Other kind of error: "+a)}function showError(a){}getLocation();</script>
+
+<script type="text/javascript" id="">bk_doJSTag(83513,1);</script>
+
+<script type="text/javascript" id="">ORA.view();</script></body></html>

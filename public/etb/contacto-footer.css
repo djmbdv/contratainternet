@@ -1,0 +1,329 @@
+/*Fuentes*/
+@font-face {
+    font-display: swap;
+   font-family: 'DINNextLTPro-Black';
+   src: url("../fonts/DINNextLTPro-Black.eot?#iefix") format("embedded-opentype"), url("../fonts/DINNextLTPro-Black.otf") format("opentype"), url("../fonts/DINNextLTPro-Black.woff") format("woff"), url("../fonts/DINNextLTPro-Black.ttf") format("truetype"), url("../fonts/DINNextLTPro-Black.svg#DINNextLTPro-Black") format("svg");
+   font-weight: normal;
+   font-style: normal; }
+ 
+ @font-face {
+    font-display: swap;
+   font-family: 'DINNextLTPro-Bold';
+   src: url("../fonts/DINNextLTPro-Bold.eot?#iefix") format("embedded-opentype"), url("../fonts/DINNextLTPro-Bold.otf") format("opentype"), url("../fonts/DINNextLTPro-Bold.woff") format("woff"), url("../fonts/DINNextLTPro-Bold.ttf") format("truetype"), url("../fonts/DINNextLTPro-Bold.svg#DINNextLTPro-Bold") format("svg");
+   font-weight: normal;
+   font-style: normal; }
+ 
+ @font-face {
+    font-display: swap;
+   font-family: 'DINNextLTPro-Medium';
+   src: url("../fonts/DINNextLTPro-Medium.eot?#iefix") format("embedded-opentype"), url("../fonts/DINNextLTPro-Medium.otf") format("opentype"), url("../fonts/DINNextLTPro-Medium.woff") format("woff"), url("../fonts/DINNextLTPro-Medium.ttf") format("truetype"), url("../fonts/DINNextLTPro-Medium.svg#DINNextLTPro-Medium") format("svg");
+   font-weight: normal;
+   font-style: normal; }
+ 
+ @font-face {
+    font-display: swap;
+   font-family: 'DINNextLTPro-Regular';
+   src: url("../fonts/DINNextLTPro-Regular.eot?#iefix") format("embedded-opentype"), url("../fonts/DINNextLTPro-Regular.otf") format("opentype"), url("../fonts/DINNextLTPro-Regular.woff") format("woff"), url("../fonts/DINNextLTPro-Regular.ttf") format("truetype"), url("../fonts/DINNextLTPro-Regular.svg#DINNextLTPro-Regular") format("svg");
+   font-weight: normal;
+   font-style: normal; }
+ 
+ @font-face {
+    font-display: swap;
+   font-family: 'DINNextLTPro-Light';
+   src: url("../fonts/DINNextLTPro-Light.eot?#iefix") format("embedded-opentype"), url("../fonts/DINNextLTPro-Light.otf") format("opentype"), url("../fonts/DINNextLTPro-Light.woff") format("woff"), url("../fonts/DINNextLTPro-Light.ttf") format("truetype"), url("../fonts/DINNextLTPro-Light.svg#DINNextLTPro-Light") format("svg");
+   font-weight: normal;
+   font-style: normal; }
+ 
+ @font-face {
+    font-display: swap;
+     font-family: 'DINNextLTPro-BlackItalic';
+     src: url('../fonts/DINNextLTPro-BlackItalic.woff2') format('woff2'),
+         url('../fonts/DINNextLTPro-BlackItalic.woff') format('woff'),
+         url('../fonts/DINNextLTPro-BlackItalic.ttf') format('truetype'),
+         url('../fonts/DINNextLTPro-BlackItalic.svg#DINNextLTPro-BlackItalic') format('svg');
+     font-weight: 900;
+     font-style: italic;
+ }
+ 
+ @font-face {
+    font-display: swap;
+     font-family: 'DINNextLTPro-HeavyCondensed';
+     src: url('../fonts/DINNextLTPro-HeavyCondensed.woff2') format('woff2'),
+         url('../fonts/DINNextLTPro-HeavyCondensed.woff') format('woff'),
+         url('../fonts/DINNextLTPro-HeavyCondensed.ttf') format('truetype'),
+         url('../fonts/DINNextLTPro-HeavyCondensed.svg#DINNextLTPro-HeavyCondensed') format('svg');
+     font-weight: 900;
+     font-style: normal;
+ }
+ 
+ @font-face {
+    font-display: swap;
+     font-family: 'DINNextLTProHeavyItalic';
+     src: url('../fonts/DINNextLTPro-HeavyItalic.woff2') format('woff2'),
+         url('../fonts/DINNextLTPro-HeavyItalic.woff') format('woff'),
+         url('../fonts/DINNextLTPro-HeavyItalic.ttf') format('truetype'),
+         url('../fonts/DINNextLTPro-HeavyItalic.svg#DINNextLTPro-HeavyItalic') format('svg');
+     font-weight: 900;
+     font-style: italic;
+ }
+ .DINNextLTPro-Black{font-family: DINNextLTPro-Black;}
+ .DINNextLTPro-Light{font-family: DINNextLTPro-Light;}
+ .DINNextLTPro-Regular{font-family: DINNextLTPro-Regular;}
+ .DINNextLTPro-Bold{font-family: DINNextLTPro-Bold;}
+ .DINNextLTPro-Medium{font-family: DINNextLTPro-Medium;}
+ .DINNextLTPro-HeavyCondensed{font-family: DINNextLTPro-HeavyCondensed;}
+ .DINNextLTProHeavyItalic{font-family: DINNextLTPro-HeavyCondensed;}
+ /*Colores*/
+ .degradeHeaderBlack{background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 33.93%, #000000 100%);}
+ .degradeHeader{background-color: rgba(35, 69, 89, 0.8);}
+ .backgroundOrange{background-color: #ee711a;}
+ .backgroundOrange2{ background-color: #e7480e;}
+ .backgroundOrange3{ background-color: #D07530;}
+ .backgroundOrange4{background: linear-gradient(90deg, #D37429 0%, #CD6D27 28.44%, #B95C24 70.57%, #A94E21 100.01%); opacity: 0.77;}
+ .backgroundOrange5{background: linear-gradient(90deg, #D37429 0%, #CD6D27 28.43%, #B95C24 70.54%, #A94E21 99.98%); opacity: 1;}
+ .backgroundBlue{background-color: #009bcf;}
+ .backgroundBlue2{background-color: rgba(24, 49, 70, 0.56) !important;}
+ .backgroundBlue22{background-color: rgba(24, 49, 70, 0.6) !important;}
+ .backgroundBlue23{background-color: rgba(45, 87, 104, 0.3) !important;}
+ .backgroundBlue3{background-color: #009BCF;}
+ .backgroundBlue4{ background-color: #00b1dd;}
+ .backgroundBlue5{ background-color: #0a3f72;}
+ .backgroundBlue6{ background-color: #09487d;}
+ .backgroundBlue7{ background-color: #7dcaef;}
+ .backgroundBlue8{ background-color: #007CB6;}
+ .backgroundBlue9{background-color: #2D4C7A;}
+ .backgroundBlue10{background-color: #51BDEA !important;}
+ .backgroundBlue11{background-color: #024E82 !important;}
+ .backgroundBlue12{background: linear-gradient(90deg, #9CCFF3 0.02%, #6AB8EB 277.79%);}
+ .backgroundWhite{background-color: #fff;}
+ .backgroundGray{background-color: #a8a8a8;}
+ .backgroundGray2{background: rgba(168, 168, 168, 0.51) !important;}
+ .backgroundGray3{background-color: #C4C4C4;}
+ .backgroundWhite{ background: rgba(255, 255, 255, 0.6);}
+ .navNuevo{background: linear-gradient(90deg, #5BC4F1 1.23%, #1AA9E6 35.99%, #009EE2 49.5%); z-index: 500;}
+ 
+ .navBtn .btn{background-color: inherit;}
+ .white{color: #fff !important;}
+ .orange{color: #ee711a;}
+ .orange2{color: #D07530;}
+ .black{color: #000;}
+ .blue{color: #2fb2e9;}
+ .blue2{color: #0081b5;}
+ .blue3{color: #004479;}
+ .blue4{color: #009BCF;}
+ .blue5{color: #09487D;}
+ .gray{color: #a8a8a8;}
+ .gray2{color: #707070;}
+ .gray3{color: #dedede;}
+ .gray4{color:#444444 ;}
+ .colorTextGracias{color: black;}
+ 
+ .fz8{font-size: 8px;}
+ .fz18{font-size: 18px;}
+ .fz-20{font-size: 20px;}
+ .fz-14{font-size: 14px;}
+ .fz13{font-size: 13px}
+ .fz100{font-size: 100px;}
+ .fz10{font-size: 10px;}
+ .fz15{font-size: 15px;}
+ .fz20{font-size: 20px;}
+ .fz25{font-size: 25px !important;}
+ .fz29{font-size: 29.40px !important;}
+ .fz30{font-size: 30px !important;}
+ .fz35{font-size: 35px !important;}
+ .fz40{font-size: 40px;}
+ .fz42{font-size: 42px;}
+ .fz45{font-size: 45px;}
+ .fz50{font-size: 50px;}
+ .fz60{font-size: 60px;}
+ .fz80{font-size: 80px;}
+ .fz90{font-size: 90px;}
+ .fz9{font-size: 9px;}
+ .fz48{font-size: 48px;}
+ .fz12{font-size: 12px;}
+ .fz70{font-size: 70px;}
+ .titleNav{font-size: 20px;}
+ .textButton{  font-size: 2rem;}
+ .llamanosbogota{  font-size: 24px;}
+ .numerobogota{  font-size: 40px;}
+ .lineaVenta{font-size: 30px}
+ 
+ .lh0{line-height: 0px;}
+ .lh1{line-height: 1;}
+ .lh10{line-height: 10px;}
+ .lh15{line-height: 15px;}
+ .lh40{line-height: 40px;}
+ .lh45{line-height: 45px;}
+ 
+ .ls-4{letter-spacing: 4px;}
+ .ls-9{letter-spacing: 9px;}
+ 
+ .rounded-pill {border-radius: 2rem !important;}
+ .br30{border-radius: 30px !important;}
+ .borderTrans{border-bottom: 3px solid #fff0;}
+ .borderNav{border-radius: 64px 0px 0px 64px;}
+ .borderWhite:hover{border-bottom: 3px solid #fff;}
+ .bordeLinea{border-radius: 30px;font-size: 20px;width: 273px;}
+ .bordeLinea2{border-radius: 30px !important;}
+ .bordeLinea2-1{border-radius: 30px 30px 0px 0px !important;}
+ .bordeLinea2-2{border-radius: 0px 0px 30px 30px !important;}
+ .borderModal{border-radius: 15px;}
+ 
+ .promos{position: absolute;bottom: 0%;left: 4%;width: 42%;}
+ .positionx{position: absolute;top: 10%;left: 15%;}
+ 
+ .w17{width: 7% !important;height: 7% !important;}
+ .w161{width: 161.5%;}
+ .numeros{ top: -89px;width: 100%;right: 10px;}
+ .trapecio-top {
+     position: absolute;
+     top: 0%;
+     right: 0;
+     width: 55%;
+     max-width: 60%;
+     height: 0px;
+     border-left: 30px solid
+     transparent;
+     border-top: 110px solid
+     #fff;
+ }
+ .zonashttc{position: fixed; /*bottom: 500px;*/bottom: 0px;z-index: 1; width: 258px;}
+ .trapecio{height: 0px; border-bottom: 60px solid #007CB6; border-top-left-radius: 206px;  border-top-right-radius: 206px;}
+ .modal-content{ background-color: inherit; border: 0px solid rgba(0,0,0,.2);}
+ .borderOrange{border: 3px solid #ee711a;}
+ .borderBlue{ border: 3px solid #09487D;}
+ .pl6{ padding-left: 6rem !important;}
+ .pr6{ padding-right: 6rem !important;}
+ .modalUso{ width: 100%; left: 1%;}
+ .encontremonos{width: 100%;max-width: 570px; margin-right: 13%;}
+ .cerrarModal{ position: absolute; top: 4%;right: 10%;}
+ a:hover{text-decoration: none;}
+ .btn {
+     display: inline-block;
+     font-weight: 400;
+     color: #212529;
+     text-align: center;
+     vertical-align: middle;
+     user-select: none;
+     background-color: #ee711a ;
+     border: 1px solid
+     transparent;
+     padding: .375rem .75rem;
+     font-size: 1rem;
+     line-height: 1.5;
+     border-radius: 0;
+     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+ }
+ .form-control {
+    
+     display: block;
+     width: 100%;
+     height: calc(1.5em + .75rem + 2px);
+     padding: .375rem .75rem;
+     font-size: 1rem;
+     font-weight: 400;
+     line-height: 1.5;
+     color: #495057;
+     background-color: #fff !important;
+     background-clip: padding-box;
+     border: 1px solid #ced4da;
+     border-radius: .25rem;
+     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+ ; border: 0;}
+ .card{ background-color: inherit;}
+ .textForm1{ font-weig}
+ .formMain{position: absolute;z-index: 1;right: 1.4%;bottom: 40%;border-style: none !important;}
+ .cardForm{ width: 457pxht: bold; font-size: 1.5rem !important;}
+ .inputForm{ background-color: #c0c0c0;color: #000;}
+ .check{ font-size: 0.6rem;  line-height: 1.2;  text-align: start;}
+ .botonForm{ text-align: center; width: 100%;}
+ .btn-primary{  border-color: inherit !important;  border-style: none !important;}
+ .form-control{  background-color: #c0c0c0;}
+ .modales{max-width: 1480px !important; margin: 1.75rem auto !important;}
+ .telefono{ margin-left: 100%;}
+ .formMainMovil{
+   position: absolute;
+   width: 477px;
+   height: 249px;
+   left: 80px;
+   top: 261px;
+   background: rgba(45, 87, 104, 0.7);
+   border-radius: 30px;
+ }
+ .bordesCurvos{
+   position: absolute;
+   width: 584px;
+   height: 190px;
+   left: 1px;
+   top: 123px;
+   background: rgba(45, 87, 104, 0.7);
+   border-radius: 20px !important;
+ }
+ .teLlamamosform{
+   height: 50px;
+   background: #EE711A;
+   border-radius: 15px;
+   margin-top: -20px;
+   z-index: 10;
+ }
+ .contentForm{position: absolute;top: 55%; left: 0%;}
+ .imgTelefono{width: 12% !important;}
+ .teLlamamosboton{
+   height: 50px;
+   background: #EE711A;
+   border-radius: 15px;
+   margin-top: -20px;
+   z-index: 10;
+   margin-bottom: -50px;
+ }
+ /*Extra small devices (portrait phones, less than 576px)*/
+ @media (max-width: 575.98px) {
+   .borderNav{border-radius: inherit;}
+   .borderNav .h1 {font-size: 25px;}
+   .borderNav .h2 {font-size: 20px;}
+   .invisible{visibility: inherit !important;}
+   .zonashttc{bottom: 15%;}
+   .zonashttc{right: 0; left: 0;}
+   .cardForm{width: 359px; border: 0;}
+   .titleNav{font-size: 16px;}
+   .bordeLinea{font-size: 16px;}
+   .lineaVenta{font-size: 22px;}
+   .formulariogeneral{padding: 0 !important;}
+   .fz90{font-size: 46px;}
+   .pa2{padding: 1rem !important;}
+   .send{width: 100% !important; padding: 0rem;}
+   .fz60{font-size: 33px !important;}
+   .positionx{top: 10%; left: 10%;}
+ }
+ 
+ /*Small devices (landscape phones, 576px and up)*/
+ @media (min-width: 576px) and (max-width: 767.98px) {
+   .invisible{visibility: inherit !important;}
+   .formulariogeneral{padding: 0 !important;}
+   .fz90{font-size: 75px;}
+   .pa2{padding: 1rem !important;}
+   .send{width: 100% !important;padding: 0rem;}
+   .fz60{font-size: 33px !important;}
+ }
+ 
+ /*Medium devices (tablets, 768px and up)*/
+ @media (min-width: 768px) and (max-width: 991.98px) {
+   .invisible{visibility: inherit !important;}
+   .bordesCurvos{top: 191px !important;}
+   .fz40{font-size: 20px;}
+   .fz35{font-size: 22px !important;}
+   .fz20{font-size: 16px;}
+ }
+ 
+ /*Large devices (desktops, 992px and up)*/
+ @media (min-width: 992px) and (max-width: 1199.98px) {
+   .borderNav .h1 {font-size: 32px;}
+   .borderNav .h2 {font-size: 27px;}
+   .fz40{font-size: 29px;}
+   .fz35{font-size: 30px !important;}
+   .teLlamamosform{width: 236px;}
+   .teLlamamosboton{left: 18%;right: 18%;}
+ }
+ /*Extra large devices (large desktops, 1200px and up)*/
+ @media (min-width: 1200px) {
+ }

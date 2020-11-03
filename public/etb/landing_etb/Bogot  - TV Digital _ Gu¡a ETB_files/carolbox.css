@@ -1,0 +1,46 @@
+﻿@charset "utf-8";
+/* CSS Carolbox */
+
+
+ #mascaracarol
+ { 
+ 	background:#333; opacity:0.8; moz-opacity:0.8; z-index:9000; filter:alfa(opacity=80); 
+ 	width:150%; height:150%; position:fixed; top:0; left:0;
+}
+
+#cuadrocarol
+{
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	 z-index:9001; 
+	 top:1%; 
+	 left:23%; 
+	margin-top: 0%;
+	 /*width:60%; 
+	 height:50%*/ 
+	 height:700px; 
+	 width:1000px; 
+	 /*background:#000; */
+	 position:absolute; 
+	 overflow:hidden;
+}
+ 
+ #cerrarcarol
+ {
+	float:right; 
+	cursor:hand; 
+	cursor:pointer;
+ 	font-weight:bold; 
+	font-size:24px; 
+	padding:0px 0px; 
+	z-index:9000;
+	position: absolute; 
+	top:10px; 
+	right:0;
+	left: 697px;
+	color:#B4701E;
+ }
+ #cerrarcarol:hover{ color:#B4701E}
+ #iframecarol{width:100%; height:100%;}
+

@@ -1,0 +1,50 @@
+
+ 
+ 
+ .card-body{
+    background: #00377b;
+    color: white;
+    height: 100%;
+    width: 100%;
+ }
+#formulario{
+position: fixed;
+}
+
+@media screen and (max-width: 575px){
+    #formulario{
+        position: absolute;
+        }
+}
+
+.btn{
+    background-color: #001c54;
+    
+}
+.color{
+    color: white;
+}
+.btn2{
+display: none;
+
+}
+
+#btn-modal{
+display: none;
+}
+
+
+.whatsapp {
+    position: fixed;
+    z-index: 1;
+    bottom: 0px;
+   
+  }
+  #logo1{
+    margin-left: -50px;
+  }
+
+  #form2{
+      background: white;
+  }
+ 

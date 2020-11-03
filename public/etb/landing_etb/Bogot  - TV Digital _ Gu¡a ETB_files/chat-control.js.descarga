@@ -1,0 +1,1345 @@
+pratech = {};
+pratech.parly = {
+  url: "https://pratech-parly-etb-view-pdn.us-east.mybluemix.net/etb",
+  urlMessage: "https://Pratech-Chatbot-etbauth-pdn.us-east.mybluemix.net/etbauth/api/send-message",
+  botName: "etb_max_pdn",
+  genesis: '<div class="chatbot-pratech-container" id="containerBot"></div>',
+  src: null,
+  prechat: true,
+  nombre: "",
+  apellido: "",
+  documento: "",
+  celular: "",
+  terminos: false,
+  tipoDoc: "",
+  correo: "",
+  intervalTerms: null,
+  temporizador: null,
+  timerInactivity1: null,
+  timerInactivity2: null,
+  lastMessage: null,
+  timeGneral: 120000,
+  diaspermitidos: 0,
+  initial: "",
+  fechafin: "",
+  fechavisita: "",
+  getUrlBaseJS: function () {
+    return pratech.parly.url + "/js/";
+  },
+
+  /**
+   * funcion base carga script
+   */
+
+  refreshToken() {
+    jqchat.ajax({
+      contentType: "application/json; charset=utf-8",
+      async: false,
+      url: "https://directline.botframework.com/v3/directline/conversations",
+      type: "POST",
+      headers: {
+        Authorization: "Bearer " + pratech.parly.data.secret
+      },
+      success: function (response) {
+        console.log("response ", response);
+      }
+    });
+    jqchat(".chatbot-pratech-content").removeClass("close");
+    jqchat(".chatbot-pratech-main").remove();
+    pratech.parly.userBot = undefined;
+    pratech.parly.prechat = true;
+    jqchat(".chatbot-parent-draggable-pratech").remove();
+  },
+
+  getScript: function (source, callback) {
+    let script = document.createElement("script");
+    let prior = document.getElementsByTagName("script")[0];
+    script.async = 1;
+
+    script.onload = script.onreadystatechange = function (_, isAbort) {
+      if (
+        isAbort ||
+        !script.readyState ||
+        /loaded|complete/.test(script.readyState)
+      ) {
+        script.onload = script.onreadystatechange = null;
+        script = undefined;
+        if (!isAbort) if (callback) callback();
+      }
+    };
+
+    script.src = source;
+    prior.parentNode.insertBefore(script, prior);
+  },
+
+  _consultarConfiguraciones: function () {
+    let urlBase = pratech.parly.url + "/api/configs";
+    fetch(urlBase)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        pratech.parly.data = data;
+      })
+      .catch(function (error) {
+        console.log("Error => ", error);
+      });
+  },
+
+  initChat: function () {
+    jqchat(document).ready(function () {
+      pratech.parly._injectReferences();
+      pratech.parly._consultarConfiguraciones();
+      pratech.parly._eventosChat();
+    });
+  },
+
+  _eventosChat: function () {
+    jqchat(".chat").click(function () {
+      pratech.parly._openchatbox();
+    });
+
+    jqchat(".hide-chat").click(function () {
+      pratech.parly._hidechatbox();
+    });
+
+    jqchat(".expand-chat").click(function () {
+      pratech.parly._expandchatbox();
+    });
+  },
+
+  _expandchatbox: function () {
+    jqchat(".expand-chat").toggleClass("active");
+    jqchat(".chatbot-pratech-main").toggleClass("expanded-chatbot-pratech");
+  },
+
+  _hidechatbox: function () {
+    jqchat(".chatbot-pratech-main").removeClass("show");
+    jqchat(".chat").click(function () {
+      pratech.parly._openchatbox();
+    });
+  },
+
+  _hideImageContent: function () {
+    jqchat(".chatbot-fullscreen-pratech").fadeOut(200, function () {
+      jqchat(this).removeClass("show");
+      jqchat(".fullscreen-pratech-content > img").remove();
+      pratech.parly.src = null;
+    });
+  },
+
+  _validateEmail(email) {
+    var re = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
+    return re.test(email);
+  },
+
+  _appendFormUser: function () {
+    return (
+      '<div class="chatbot-pratech-form">' +
+      '<form id="formUser" class="chatbot-pratech-formTag">' +
+      '<div class="chatbot-pratech-message-info">Los datos suministrados en el formulario serán utilizados para el registro de tu contacto</div>' +
+      '<div class="chatbot-pratech-form-row">' +
+      '<div class="chatbot-pratech-form-group chatbot-pratech-col-xs-6">' +
+      '<input type="text" placeholder="Nombre" id="name" onkeydown="pratech.parly._deleteInput(alertNombre)">' +
+      '<div class="chatbot-pratech-alertRed" id="alertNombre" style="display: none">El nombre es obligatorio</div>' +
+      "</div>" +
+      '<div class="chatbot-pratech-form-group chatbot-pratech-col-xs-6 chatbot-pratech-col-6-right">' +
+      '<input type="text" placeholder="Apellidos" id="apellido" onkeydown="pratech.parly._deleteInput(alertApellido)">' +
+      '<div class="chatbot-pratech-alertRed" id="alertApellido" style="display: none">El apellido es obligatorio</div>' +
+      "</div>" +
+      '<div class="chatbot-pratech-form-group chatbot-pratech-col-xs-6">' +
+      '<select id="tipoDocumento" onchange="pratech.parly._deleteInput(alertTipoDocumento)">' +
+      '<option value="" disabled selected>Tipo de documento</option>' +
+      '<option value="CC">Cédula de Ciudadanía</option>' +
+      '<option value="CE">Cédula de Extranjería</option>' +
+      '<option value="NIT">NIT</option>' +
+      '<option value="PA">Pasaporte</option>' +
+      '<option value="RUT">RUT</option>' +
+      '<option value="TI">Tarjeta de Identidad</option>' +
+      "</select>" +
+      '<div class="chatbot-pratech-alertRed" id="alertTipoDocumento" style="display: none">El tipo de documento es obligatorio</div>' +
+      "</div>" +
+      '<div class="chatbot-pratech-form-group chatbot-pratech-col-xs-6 chatbot-pratech-col-6-right">' +
+      '<input type="text" placeholder="Número de documento" id="documento" onkeydown="pratech.parly._deleteInput(alertDocumento)">' +
+      '<div class="chatbot-pratech-alertRed" id="alertDocumento" style="display: none">El documento es obligatorio</div>' +
+      "</div>" +
+      '<div class="chatbot-pratech-form-group chatbot-pratech-col-xs-6">' +
+      '<input type="text" placeholder="Celular" id="celular" name="celular" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" maxlength="10" onkeydown="pratech.parly._deleteInput(alertCelular)">' +
+      '<div class="chatbot-pratech-alertRed" id="alertCelular" style="display: none"></div>' +
+      "</div>" +
+      '<div class="chatbot-pratech-form-group chatbot-pratech-col-xs-6 chatbot-pratech-col-6-right">' +
+      '<input  pattern="^[a-zA-Z0-9]+$" type="text" placeholder="Correo" id="correo" name="correo" onpaste="return false;" onkeydown="pratech.parly._deleteInput(alertCorreo)">' +
+      '<div class="chatbot-pratech-alertRed" id="alertCorreo" style="display: none"></div>' +
+      "</div>" +
+      '<div class="chatbot-pratech-form-group">' +
+      '<div class="chatbot-pratech-terms">' +
+      '<input type="checkbox" required id="terms" name="terms" onclick="pratech.parly._messageInactivityUser(alertTerminos)"> ' +
+      '<label for="terms">Aceptar </label>' +
+      '<a href="https://etb.com/DocumentosPDF/Terminos%20y%20condiciones%20de%20canales%20chat%20y%20ws%20revisado%20el%201%20de%20octubre%20%20de%202019.pdf" target="_blank">términos y condiciones</a></div>' +
+      '<div class="chatbot-pratech-alertRed" id="alertTerminos" style="display: none">Debes leer y aceptar los términos y condiciones para poder continuar la conversación con Max</div>' +
+      "</div>" +
+      '<div class="chatbot-pratech-form-group">' +
+      '<div class="chatbot-pratech-btn c-aqua" onclick="pratech.parly._showChat(event)">Continuar</div>' +
+      "</div>" +
+      "</div>" +
+      '<div class="chatbot-pratech-alert" style="display: none" id="messageTerms">' +
+      '<div class="chatbot-pratech-alert-close" onclick="pratech.parly._hideAlert()"><em class="fal fa-times"></em></div>' +
+      "Debes leer y aceptar los términos y condiciones para poder continuar la conversación con Max" +
+      "</div>" +
+      "</form>"
+    );
+  },
+
+  _appendFormSession: function () {
+    return (
+      '<div class="chatbot-pratech-aside" id="formLoginAside">' +
+      '<div class="chatbot-pratech-aside-header"><img src="' + pratech.parly.url + '/images/ic_user_orange.gif" class="chatbot-pratech-form-header-image" /> Login</div>' +
+      '<p class="chatbot-pratech-aside-tagline">Ingresa con tu correo electrónico y tu contraseña</p>' +
+      '<form class="chatbot-pratech-aside-form">' +
+      '<input type="email" id="femail" name="femail" placeholder="Correo electronico" class="chatbot-pratech-aside-input" onkeydown="pratech.parly.hideAlertsLogin()">' +
+      '<div class="chatbot-pratech-alertRed" id="alertLoginMail" style="display: none">Formato de correo inválido.</div>' +
+      '<input type="password" id="fpass" name="fpass" placeholder="******" class="chatbot-pratech-aside-input" onkeydown="pratech.parly.hideAlertsLogin()">' +
+      '<div class="chatbot-pratech-alertRed" id="alertLoginPass" style="display: none">La contraseña debe contener mínimo 8 caracteres, una letra mayúscula y una minúscula.</div>' +
+      '<div class="chatbot-pratech-alertRed" id="alertLoginIncompletos" style="display: none">Complete todos los campos.</div>' +
+      '<div class="chatbot-pratech-aside-sendButton" onclick="pratech.parly._login(event)"><img src="' + pratech.parly.url + '/images/ic_key.png" class="chatbot-pratech-form-header-image" /> Ingresar</div>' +
+      '<input type="button" onclick="pratech.parly._loginCancel()" value="Cancelar" class="chatbot-pratech-aside-cancelButton">' +
+      '</form>' +
+      '<div class="chatbot-pratech-aside-loader" id="loadingSpinner" style="display: none">' +
+      '<div class="chatbot-pratech-loading"><img src="' + pratech.parly.url + '/images/avatar-access.png" /></div>' +
+      '</div>' +
+      '</div>'
+    );
+  },
+
+  _appendFormDateRange: function () {
+    return (
+      '<div class="chatbot-pratech-aside" id="formDateRangeAside">' +
+      '<div class="chatbot-pratech-aside-tagline">' +
+      'Por favor seleccione el rango de fechas para la suspención voluntaria' +
+      '</div>' +
+      '<div class="chatbot-pratech-aside-form">' +
+      '<input id="rangedate" type="text" name="daterange" readonly class="chatbot-pratech-aside-input" />' +
+      '<div class="chatbot-pratech-alertRed" id="alertempty" style="display: none">Complete el campo.</div>' +
+      '</div>' +
+      '<div class="chatbot-pratech-aside-form">' +
+      '<div style="display: none" id="savedatarange" onclick="pratech.parly._validateDateRange(event)" class="chatbot-pratech-aside-sendButton">Guardar</div>' +
+      '<div onclick="pratech.parly._cancelDate(event)" class="chatbot-pratech-aside-cancelButton">Cancelar</div>' +
+      '</div>' +
+      '<div class="chatbot-pratech-aside-loader" id="loadingDataRanger" style="display: none">' +
+      "</div>"
+    );
+  },
+
+  _appendFormDateVisitaTecnica: function (url) {
+    return (
+      '<div class="chatbot-pratech-aside chatbot-pratech-aside-has-iframe" id="formDateVisitaTecnica">' +
+      '<iframe src=' + url + '  width="100%" height="100%" class="chatbot-pratech-iframe"></iframe>' +
+      "</div>"
+    );
+  },
+
+  _appendIframeCobertura: function (url) {
+    return (
+      '<div class="chatbot-pratech-aside chatbot-pratech-aside-has-iframe" id="iframeCobertura">' +
+      '<iframe allow="geolocation" src=' + url + ' class="chatbot-pratech-iframe"></iframe>' +
+      '</div>'
+    )
+  },
+
+  _appendFormBuyBag: function (url) {
+    return (
+      '<div class="chatbot-pratech-aside chatbot-pratech-aside-has-iframe" id="iframeBuyBag">' +
+      '<iframe  src=' + url + '  class="chatbot-pratech-iframe"></iframe>' +
+      "</div>"
+    )
+  },
+  _appendFormAddition: function (url) {
+    return (
+      '<div class="chatbot-pratech-aside chatbot-pratech-aside-has-iframe" id="iframeAddition">' +
+      '<iframe src=' + url + '  class="chatbot-pratech-iframe"></iframe>' +
+      "</div>"
+    )
+  },
+
+  _appendFormBuyCard: function (url) {
+    return (
+      '<div class="chatbot-pratech-aside chatbot-pratech-aside-has-iframe" id="iframeBuyCard">' +
+      '<iframe src=' + url + '  class="chatbot-pratech-iframe"></iframe>' +
+      "</div>"
+    )
+  },
+
+  _appendChatbotAsideIframe: function (url, tipoiframe, classname, classTypeIframe) {
+    if (url == "calendario") {
+      return (
+        '<div class="chatbot-pratech-aside" id="cardChatbotAsideIframe">' +
+        '<div class="chatbot-pratech-aside-tagline">' +
+        'Seleccione una fecha' +
+        '</div>' +
+        '<div class="chatbot-pratech-aside-form">' +
+        '<input id="datepicker" type="text" name="daterange" readonly class="chatbot-pratech-aside-input" />' +
+        '<div class="chatbot-pratech-alertRed" id="alertempty" style="display: none">Complete el campo.</div>' +
+        '</div>' +
+        '<div class="chatbot-pratech-aside-form">' +
+        '<div style="display: none" id="savedatapicker" onclick="pratech.parly._validateDatePicker(event)" class="chatbot-pratech-aside-sendButton">Guardar</div>' +
+        '<div onclick="pratech.parly._cancelDatePicker(event)" class="chatbot-pratech-aside-cancelButton">Cancelar</div>' +
+        '</div>' +
+        '<div class="chatbot-pratech-aside-loader" id="loadingDataPicker" style="display: none">' +
+        "</div>"
+      );
+    } else {
+      if (jqchat("#cardChatbotAsideIframe").length) {
+        jqchat("#cardChatbotAsideIframe").remove();
+      }
+      classname = classname || "";
+      return (
+        "<div class='chatbot-pratech-aside chatbot-pratech-aside-has-iframe " + classTypeIframe + "' id='cardChatbotAsideIframe'>" +
+        '<iframe allow="geolocation" name="chatbotAsideIframe" id="chatbotAsideIframe" src="' + url + '" data-tipo-iframe="' + tipoiframe + '" class="chatbot-pratech-iframe ' + classname + '"></iframe>' +
+        "</div>"
+      )
+    }
+  },
+
+  closeAsideIframe() {
+    jqchat("#cardChatbotAsideIframe").remove();
+  },
+
+  _appendLoad: function (notification) {
+    return (
+      '<div id="temporizador">' +
+      '<div class="wc-message-wrapper list">' +
+      '<div class="wc-message wc-message-from-bot">' +
+      '<div class="wc-message-content">' +
+      '<svg class="wc-message-callout">' +
+      '<path class="point-left" d="m0,6 l6 6 v-12 z"></path>' +
+      '<path class="point-right" d="m6,6 l-6 6 v-12 z"></path>' +
+      '</svg>' +
+      '<div>' +
+      '<div class="format-markdown">' +
+      '<p class="chatbot-pratech-p1 pratech-typing">' + notification + '</p>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      '<div class="wc-message-from wc-message-from-bot">' +
+      '<span>Max</span>' +
+      '</div>' +
+      '</div>' +
+      '</div>'
+    );
+  },
+
+  _login: function (event) {
+    event.preventDefault();
+    let loginEmail = jqchat("#femail").val();
+    let loginPass = jqchat("#fpass").val();
+    if (loginEmail === "" || loginPass === "") {
+      jqchat("#alertLoginIncompletos").css("display", "block");
+    } else {
+      if (pratech.parly._validateLoginForm(loginEmail, loginPass))
+        pratech.parly._authMail(loginEmail, loginPass);
+    }
+  },
+
+  _validateDateRange: function (event) {
+    event.preventDefault();
+    var Date = jqchat("#rangedate").val();
+    if (Date == "") {
+      jqchat("#savedatarange").css("display", "block");
+    } else {
+      var dataini = pratech.parly.initial;
+      var dataend = pratech.parly.fechafin;
+      //  var dataini = Date.split("-")[0];
+      // var dataend = Date.split("-")[1];
+      pratech.parly._confirmDate(dataini, dataend);
+    }
+  },
+
+  _validateDatePicker: function (event) {
+    event.preventDefault();
+    var Date = jqchat("#datepicker").val();
+    if (Date == "") {
+      jqchat("#savedatapicker").css("display", "block");
+    } else {
+      pratech.parly._confirmDateVisit(Date);
+    }
+  },
+
+  _confirmDateVisit: function (Date) {
+    jqchat("#loadingDataPicker").css("display", "flex");
+    jqchat
+      .ajax({
+        url: pratech.parly.urlMessage,
+        dataType: "json",
+        type: "POST",
+        data: {
+          idConversacion: pratech.parly.userBot.id,
+          data: {
+            "login": false,
+            "menssage": Date
+          },
+          palabraClave: "visita tecnica",
+          botId: pratech.parly.botName
+        }
+      })
+      .done(function (data) {
+        pratech.parly._hideDatepicker();
+        jqchat("#_hideDatepicker").css("display", "none");
+      });
+  },
+
+  _validateLoginForm(mail, password) {
+    let response = true;
+    let patternPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
+    let patternMail = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/
+    if (!patternMail.test(mail)) {
+      jqchat("#alertLoginMail").css("display", "block");
+      return false;
+    }
+    if (!patternPass.test(password)) {
+      jqchat("#alertLoginPass").css("display", "block");
+      return false;
+    }
+    return response;
+  },
+
+  _confirmDate: function (dataini, dataend) {
+    jqchat("#loadingDataRanger").css("display", "flex");
+    jqchat
+      .ajax({
+        url: pratech.parly.url + "/api/datarange",
+        dataType: "json",
+        type: "POST",
+        data: {
+          numberday: pratech.parly.diaspermitidos,
+          idConversacion: pratech.parly.userBot.id,
+          dataini: dataini,
+          dataend: dataend
+
+        }
+      })
+      .done(function (data) {
+        if (data.Respuesta.tipo_estado) {
+          pratech.parly._hide_date_range();
+          jqchat("#loadingDataRanger").css("display", "none");
+        }
+      });
+  },
+
+  _hide_date_range: function () {
+    jqchat("#formDateRangeAside").remove();
+  },
+
+  _hideDatepicker: function () {
+    jqchat("#cardChatbotAsideIframe").remove();
+  },
+
+  _cancelDate: function () {
+    jqchat("#loadingDataRanger").css("display", "flex");
+    jqchat
+      .ajax({
+        url: pratech.parly.url + "/api/datarangecancel",
+        dataType: "json",
+        type: "POST",
+        data: {
+          dateselected: pratech.parly.userBot.id,
+          idConversacion: pratech.parly.userBot.id
+        }
+      })
+      .done(function (data) {
+        if (data.Respuesta.tipo_estado) {
+          pratech.parly._hide_date_range();
+          jqchat("#loadingDataRanger").css("display", "none");
+        }
+      });
+  },
+
+  _cancelDatePicker: function () {
+    jqchat("#loadingDataPicker").css("display", "flex");
+    jqchat
+      .ajax({
+        url: pratech.parly.urlMessage,
+        dataType: "json",
+        type: "POST",
+        data: {
+          idConversacion: pratech.parly.userBot.id,
+          data: {
+            "login": false,
+            "menssage": "Cancelo visita tecnica"
+          },
+          palabraClave: "visita tecnica",
+          botId: pratech.parly.botName
+        }
+      })
+      .done(function (data) {
+        pratech.parly._hideDatepicker();
+        jqchat("#_hideDatepicker").css("display", "none");
+      });
+  },
+  _authMail: function (mail, password) {
+    jqchat("#loadingSpinner").css("display", "flex");
+    jqchat
+      .ajax({
+        url: pratech.parly.url + "/api/authmail",
+        dataType: "json",
+        type: "POST",
+        data: {
+          mail: mail,
+          password: password,
+          idConversacion: pratech.parly.userBot.id
+        }
+      })
+      .done(function (data) {
+        if (data.Respuesta.tipo_estado) {
+          pratech.parly.reactivarChat();
+          pratech.parly.hideLoginForm();
+          jqchat("#loadingSpinner").css("display", "none");
+        }
+      });
+  },
+
+  _finalTime: function () {
+    jqchat
+      .ajax({
+        url: pratech.parly.url + "/api/finalTime",
+        dataType: "json",
+        type: "POST",
+        data: {
+          idConversacion: pratech.parly.userBot.id
+        }
+      })
+      .done(function (data) {
+        if (data.Respuesta.tipo_estado) {
+          jqchat("#temporizador").remove();
+          pratech.parly.reactivarChat();
+        }
+      });
+  },
+
+  _loginCancel: function () {
+    jqchat("#loadingSpinner").css("display", "flex");
+    jqchat
+      .ajax({
+        url: pratech.parly.url + "/api/logincancel",
+        dataType: "json",
+        type: "POST",
+        data: {
+          idConversacion: pratech.parly.userBot.id
+        }
+      })
+      .done(function (data) {
+        if (data.Respuesta.tipo_estado) {
+          pratech.parly.reactivarChat();
+          pratech.parly.hideLoginForm();
+          jqchat("#loadingSpinner").css("display", "none");
+        }
+      });
+
+
+  },
+
+  hideLoginForm: function () {
+    jqchat("#formLoginAside").remove();
+  },
+
+  hideAlertsLogin: function () {
+    jqchat("#alertLoginMail").css("display", "none");
+    jqchat("#alertLoginPass").css("display", "none");
+    jqchat("#alertLoginIncompletos").css("display", "none");
+  },
+
+  _messageInactivityUser: function (id) {
+    let idE = jqchat(id).attr("id");
+    jqchat("#" + idE).css("display", "none");
+    let terms = jqchat("#terms").prop("checked");
+    if (terms) {
+      clearInterval(pratech.parly.intervalTerms);
+    } else {
+      pratech.parly.intervalTerms = setInterval(function () {
+        jqchat("#messageTerms").css("display", "block");
+      }, 60000);
+    }
+  },
+
+  _controlsWithInput: function () {
+    pratech.parly._setInputFilter(document.getElementById("celular"), function (
+      value
+    ) {
+      return /^\d*\.?\d*$/.test(value);
+    });
+
+    pratech.parly._setInputFilter(
+      document.getElementById("documento"),
+      function (value) {
+        return /^\d*\.?\d*$/.test(value);
+      }
+    );
+  },
+
+  _formatCel: function () {
+    let celular = jqchat("#celular").val();
+    let formAtCel = celular.slice(0, 10);
+    jqchat("#celular").val(formAtCel);
+  },
+
+  _hideAlert: function () {
+    jqchat("#messageTerms").css("display", "none");
+  },
+
+  _deleteInput: function (id) {
+    let idE = jqchat(id).attr("id");
+    jqchat("#" + idE).css("display", "none");
+    clearInterval(pratech.parly.intervalTerms);
+    pratech.parly.intervalTerms = setInterval(function () {
+      jqchat("#messageTerms").css("display", "block");
+    }, 60000);
+  },
+
+  _showChat: function (event) {
+    event.preventDefault();
+    if (pratech.parly._validationsForm()) {
+      pratech.parly.setDataToWason();
+      clearInterval(pratech.parly.intervalTerms);
+      pratech.parly.prechat = false;
+      pratech.parly._openchatbox();
+    }
+  },
+
+  setDataToWason: function () {
+    pratech.parly.nombre = jqchat("#name").val();
+    pratech.parly.apellido = jqchat("#apellido").val();
+    pratech.parly.documento = jqchat("#documento").val();
+    pratech.parly.celular = jqchat("#celular").val();
+    pratech.parly.terminos = jqchat("#terms").prop("checked");
+    pratech.parly.tipoDoc = jqchat("#tipoDocumento").val();
+    pratech.parly.correo = jqchat("#correo").val();
+  },
+
+  _validationsForm: function () {
+    let nombre = jqchat("#name").val();
+    let apellido = jqchat("#apellido").val();
+    let documento = jqchat("#documento").val();
+    let celular = jqchat("#celular").val();
+    let terminos = jqchat("#terms").prop("checked");
+    let tipoDoc = jqchat("#tipoDocumento").val();
+    let correo = jqchat("#correo").val();
+
+    let response = true;
+
+    if (!nombre || !nombre.length) {
+      jqchat("#alertNombre").css("display", "block");
+      response = false;
+    }
+
+    if (!apellido || !apellido.length) {
+      jqchat("#alertApellido").css("display", "block");
+      response = false;
+    }
+
+    if (!documento || !documento.length) {
+      jqchat("#alertDocumento").css("display", "block");
+      response = false;
+    }
+
+    let firstCelular = celular.charAt(0);
+    if (firstCelular !== "3") {
+      jqchat("#alertCelular").text("Tú número de celular debe empezar por 3");
+      jqchat("#alertCelular").css("display", "block");
+      response = false;
+    }
+    if (!celular || celular.length < 10) {
+      jqchat("#alertCelular").text(
+        "El celular es obligatorio y debe contener 10 dígitos"
+      );
+      jqchat("#alertCelular").css("display", "block");
+
+      response = false;
+    }
+
+    if (!tipoDoc || !tipoDoc.length) {
+      jqchat("#alertTipoDocumento").css("display", "block");
+      response = false;
+    }
+
+    if (!pratech.parly._validateEmail(correo)) {
+      jqchat("#alertCorreo").text(
+        "El formato del correo es incorrecto"
+      );
+      jqchat("#alertCorreo").css("display", "block");
+      response = false;
+    }
+
+    if (!terminos) {
+      jqchat("#alertTerminos").css("display", "block");
+      response = false;
+    }
+
+    return response;
+  },
+
+  _printChatOrForm: function () {
+    if (pratech.parly.prechat) {
+      jqchat("#containerBot").append(pratech.parly._appendFormUser());
+      jqchat('#savedatarange').hide();
+      pratech.parly._controlsWithInput();
+      pratech.parly.intervalTerms = setInterval(function () {
+        jqchat("#messageTerms").css("display", "block");
+      }, 60000);
+    } else {
+      jqchat("#formUser").remove();
+      jqchat("#containerBot").append(
+        '<div class="chatbot-pratech-container" id="containerBot"></div>'
+      );
+      setTimeout(function () {
+        pratech.parly._initChat();
+      }, 500);
+    }
+  },
+
+  _initChat: function () {
+    if (!pratech.parly.userBot) {
+      pratech.parly.userBot = {
+        id: "Etb " + pratech.parly._guid(),
+        name: ""
+      };
+
+      pratech.parly.directLineSecret = pratech.parly.data.secret;
+
+      pratech.parly.botConnection = new BotChat.DirectLine({
+        secret: pratech.parly.directLineSecret
+      });
+
+      BotChat.App(
+        {
+          botConnection: pratech.parly.botConnection,
+          user: pratech.parly.userBot,
+          bot: {
+            id: "botid"
+          },
+          resize: "detect"
+        },
+        document.getElementById("containerBot")
+      );
+
+      pratech.parly._saludar();
+    }
+  },
+
+  _isETBEmpresa() {
+    let saludo = jqchat("a[saludo]").attr("saludo") || "";
+    return /^Hola::etbEmpresas$/.test(saludo.trim())
+  },
+
+  _openchatbox: function () {
+
+    if (this._isETBEmpresa()) {
+      pratech.parly.prechat = false;
+    }
+
+    if (jqchat(".chatbot-parent-draggable-pratech.parent").length) {
+      jqchat(".chatbot-pratech-main").addClass("show");
+      if (!pratech.parly.prechat) {
+        pratech.parly._printChatOrForm();
+      }
+
+    } else {
+      if (
+        typeof BotChat !== "undefined" &&
+        BotChat &&
+        pratech.parly.data &&
+        pratech.parly.data.secret &&
+        typeof jqchat().draggable != "undefined"
+      ) {
+        jqchat("body").append(
+          jqchat(
+            '<div class="chatbot-parent-draggable-pratech parent"></div>' +
+            '<div class="chatbot-pratech-main show" id="draggable">' +
+            '<div class="chatbot-pratech-content">' +
+            '<div class="chatbot-pratech-header">' +
+            '<div class="chatbot-pratech-info-title">' +
+            '<div class="title-chat"><span class="lighter subtitle">¡Hola, soy Max!</span></div>' +
+            '<p class="chatbot-pratech-p1 pratech-typing">Escribiendo<span>...</span></p>' +
+            '<div class="chatbot-pratech-actions">' +
+            '<ul class="chatbot-pratech-list-actions">' +
+            '<li><a href="javascript:;" class="hide-chat"><i class="fa fa-times"></i></a></li>' +
+            '<li><a href="javascript:;" class="expand-chat"></a></li>' +
+            "</ul>" +
+            "</div>" +
+            '<div class="chatbot-pratech-logo">' +
+            '<img src="' +
+            pratech.parly.url +
+            '/images/max-gif.gif" alt="" class="img-responsive">' +
+            "</div>" +
+            "</div>" +
+            "</div>" +
+            '<div class="chatbot-pratech-body">' +
+            pratech.parly.genesis +
+            "</div>" +
+            "</div>" +
+            "</div>"
+          )
+        );
+
+        pratech.parly._printChatOrForm();
+
+        jqchat(".hide-chat").click(function () {
+          pratech.parly._hidechatbox();
+        });
+
+        jqchat(".expand-chat").click(function () {
+          pratech.parly._expandchatbox();
+        });
+
+        jqchat("#draggable").draggable({
+          containment: "parent"
+        });
+      }
+    }
+  },
+
+  _saludar: function () {
+    let saludo = jqchat(".chat.chatbot-pratech-floating").attr("saludo") || "Hola";
+
+    if (!this._isETBEmpresa()) {
+      saludo = saludo +
+        "::" +
+        pratech.parly.nombre +
+        "::" +
+        pratech.parly.apellido +
+        "::" +
+        pratech.parly.documento +
+        "::" +
+        pratech.parly.celular +
+        "::" +
+        pratech.parly.terminos +
+        "::" +
+        pratech.parly.tipoDoc +
+        "::" +
+        pratech.parly.correo
+    }
+
+    if (typeof cookieAuth !== "undefined" && cookieAuth) {
+      //Js bot framework
+      jqchat
+        .ajax({
+          url: pratech.parly.url + "/api/token",
+          dataType: "json",
+          type: "POST",
+          data: {
+            token: cookieAuth
+          },
+          cache: false
+        })
+        .done(function (data, textStatus, jqXHR) {
+          saludo = saludo + "::" + (data.token || "");
+          pratech.parly._botStart(saludo);
+        });
+    } else {
+      pratech.parly._botStart(saludo);
+    }
+  },
+
+  _botStart: function (saludo) {
+    pratech.parly.botConnection
+      .postActivity({
+        type: "message",
+        from: {
+          id: pratech.parly.userBot.id,
+          name: pratech.parly.userBot.name
+        },
+        text: saludo
+      })
+      .subscribe(function (id) {
+        console.log("success");
+      });
+
+    this.botConnection.activity$
+      .filter(function (activity) {
+        pratech.parly._imageMessage(activity);
+        pratech.parly._lastMessage(activity);
+        pratech.parly.disabledButton();
+      })
+      .subscribe(function (activity) {
+        console.log("subscribe");
+      });
+    saludo;
+  },
+
+  _setInputFilter: function (textbox, inputFilter) {
+    [
+      "input",
+      "keydown",
+      "keyup",
+      "mousedown",
+      "mouseup",
+      "select",
+      "contextmenu",
+      "drop"
+    ].forEach(function (event) {
+      textbox.addEventListener(event, function () {
+        if (inputFilter(this.value)) {
+          this.oldValue = this.value;
+          this.oldSelectionStart = this.selectionStart;
+          this.oldSelectionEnd = this.selectionEnd;
+        } else if (this.hasOwnProperty("oldValue")) {
+          this.value = this.oldValue;
+          this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+        } else {
+          this.value = "";
+        }
+      });
+    });
+  },
+
+  enviarMsgInactividad: function (idInactividad) {
+    try {
+      jqchat.ajax({
+        url: pratech.parly.url + "/api/inactivity",
+        dataType: "json",
+        type: "POST",
+        data: {
+          idConversacion: pratech.parly.userBot.id, idInactividad: idInactividad
+        }
+      })
+        .done(function (data) {
+          console.log(data);
+        });
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  },
+
+  _lastMessage: function (activity) {
+    clearTimeout(pratech.parly.timerInactivity1);
+    clearTimeout(pratech.parly.timerInactivity2);
+    if (activity.type == "message") {
+      pratech.parly.lastMessage = activity.from.id == pratech.parly.userBot.id ? activity : pratech.parly.lastMessage;
+    }
+    if (activity && activity.type == "typing") {
+      jqchat(".wc-message-wrapper")
+        .last()
+        .addClass("wc-pratech-typing");
+      jqchat(".pratech-typing").addClass("show");
+      pratech.parly.bloquearCampoEscritura(activity);
+
+    } else if (activity && activity.type === "event") {
+      if (activity.value.id == "asesor") {
+        let srcFrame = this.urlPasoAsesor(activity);
+        jqchat(".pratech-typing").removeClass("show");
+        jqchat("#containerBot").append(
+          `<iframe id='if_asesor_etb' name='if_asesor_etb' width='560' height='315' src='${srcFrame}' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>`
+        );
+      } else if (activity.value.id == "temporizador") {
+        pratech.parly.disabledForLoad();
+        jqchat(".wc-message-group-content").append(pratech.parly._appendLoad(activity.value.mensaje));
+        setTimeout(function () {
+          pratech.parly._finalTime();
+        }, activity.value.tiempo);
+
+      } else if (activity.value.id == "inactividad") {
+        setTimeout(function () {
+          pratech.parly.habilitarCampoEscritura()
+        }, 1000);
+        pratech.parly.lastMessage = null;
+        clearTimeout(pratech.parly.timerInactivity1);
+        clearTimeout(pratech.parly.timerInactivity2);
+        pratech.parly.timerInactivity1 = setTimeout(function () {
+          if (!pratech.parly.lastMessage) {
+            pratech.parly.enviarMsgInactividad("inactividad_1");
+            pratech.parly.timerInactivity2 = setTimeout(function () {
+              if (!pratech.parly.lastMessage) {
+                pratech.parly.enviarMsgInactividad("inactividad_2");
+              }
+            }, activity.value.tiempo);
+          }
+        }, activity.value.tiempo);
+      } else if (activity.value.id == "cerrar_sesion") {
+        pratech.parly.refreshToken();
+      } else if (activity.value.id == "autenticacion") {
+        jqchat("#draggable").append(pratech.parly._appendFormSession());
+        pratech.parly.disabledForLoad();
+      } else if (activity.value.id == "cobertura") {
+        //jqchat("#draggable").append(pratech.parly._appendIframeCobertura(activity.value.url));
+        jqchat("#draggable").append(pratech.parly._appendChatbotAsideIframe(activity.value.url, activity.value.id, "", 'chatbot-pratech-aside-cobertura'));
+        pratech.parly.disabledForLoad();
+      } else if (activity.value.id == "rango_fechas") {
+        jqchat("#draggable").append(pratech.parly._appendFormDateRange());
+        pratech.parly.enableDateRangePicker(activity.value.dias);
+        pratech.parly.disabledForLoad();
+      } else if (activity.value.id == "cambio_plan") {
+        //jqchat("#draggable").append(pratech.parly._appendFormDateVisitaTecnica(activity.value.url));
+        jqchat("#draggable").append(pratech.parly._appendChatbotAsideIframe(activity.value.url, "", "", "chatbot-pratech-aside-bolsa"));
+        pratech.parly.disabledForLoad();
+      } else if (activity.value.id == "comprar_bolsa") {
+        //jqchat("#draggable").append(pratech.parly._appendFormBuyBag(activity.value.url));
+        jqchat("#draggable").append(pratech.parly._appendChatbotAsideIframe(activity.value.url, "", "", "chatbot-pratech-aside-bolsa"));
+        pratech.parly.disabledForLoad();
+      } else if (activity.value.id == "consulta_adicion") {
+        //jqchat("#draggable").append(pratech.parly._appendFormAddition(activity.value.url));
+        jqchat("#draggable").append(pratech.parly._appendChatbotAsideIframe(activity.value.url, "", "", "chatbot-pratech-aside-bolsa"));
+        pratech.parly.disabledForLoad();
+      } else if (activity.value.id == "compra_carta") {
+        //jqchat("#draggable").append(pratech.parly._appendFormBuyCard(activity.value.url));
+        jqchat("#draggable").append(pratech.parly._appendChatbotAsideIframe(activity.value.url, "", "", "chatbot-pratech-aside-bolsa"));
+        pratech.parly.disabledForLoad();
+      } else if (activity.value.closeIframe == true) {
+        jqchat("#cardChatbotAsideIframe").remove();
+        pratech.parly.reactivarChat();
+      } else if (activity.value.id == "calendario_web") {
+        jqchat("#draggable").append(pratech.parly._appendChatbotAsideIframe(activity.value.url, "", "", "chatbot-pratech-aside-bolsa"));
+        var Agendas = [
+          {
+            "Date": "2020-08-20"
+          },
+          {
+            "Date": "2020-09-20"
+          },
+          {
+            "Date": "2020-10-31"
+          },
+          {
+            "Date": "2020-12-31"
+          },
+          {
+            "Date": "2020-12-30"
+          }
+        ];
+        pratech.parly.enableCalendar(activity.value.dias_permitidos);
+        pratech.parly.disabledForLoad();
+      }
+    } else {
+      pratech.parly.reactivarChat();
+    }
+  },
+
+  _imageMessage: function (activity) {
+    if (activity && activity.type == "message") {
+      if (activity.attachments) {
+        if (activity.attachments[0].content.images) {
+          jqchat(".wc-card.hero > img").click(function () {
+            if (!pratech.parly.src) {
+              pratech.parly.src = activity.attachments[0].content.images[0].url;
+              pratech.parly._openImage();
+            }
+            jqchat(".close-fullscreen").click(function () {
+              pratech.parly._hideImageContent();
+            });
+          });
+        }
+      }
+    }
+  },
+
+  _openImage: function () {
+    if (jqchat(".chatbot-fullscreen-pratech").length) {
+      jqchat(".fullscreen-pratech-content").append(
+        jqchat('<img src="' + pratech.parly.src + '">')
+      );
+      jqchat(".chatbot-fullscreen-pratech").addClass("show");
+    } else {
+      jqchat("body").append(
+        jqchat(
+          '<div class="chatbot-fullscreen-pratech show">' +
+          '<div class="chatbot-fullscreen-pratech-content">' +
+          '<div class="fullscreen-pratech-body">' +
+          '<button type="button" class="close-fullscreen">' +
+          '<span class="fa fa-times"></span>' +
+          "</button>" +
+          '<div class="fullscreen-pratech-content">' +
+          '<img src="' +
+          pratech.parly.src +
+          '">' +
+          "</div>" +
+          "</div>" +
+          "</div>" +
+          "</div>"
+        ).fadeIn(200)
+      );
+    }
+  },
+
+  _injectReferences: function () {
+    jqchat("head").append(
+      jqchat('<link rel="stylesheet" type="text/css" />').attr(
+        "href",
+        "https://cdn.botframework.com/botframework-webchat/master/botchat.css"
+      )
+    );
+    $("head").append(
+      $('<link rel="stylesheet" type="text/css" />').attr(
+        "href",
+        pratech.parly.url + "/css/styles.css"
+      )
+    );
+
+    $("head").append(
+      $('<link rel="stylesheet" type="text/css" />').attr(
+        "href",
+        pratech.parly.url + "/plugins/daterangepicker/daterangepicker.css"
+      )
+    );
+
+    jqchat
+      .ajax({
+        url: "https://kit.fontawesome.com/43f6fd71af.js",
+        dataType: "script",
+        cache: true
+      })
+      .done(function (script, textStatus) {
+        console.log("load  https://kit.fontawesome.com/43f6fd71af.js");
+      });
+
+    jqchat
+      .ajax({
+        url: pratech.parly.url + "/plugins/daterangepicker/moment.min.js",
+        dataType: "script",
+        cache: true
+      })
+      .done(function (script, textStatus) {
+        console.log("load " + pratech.parly.url + "/plugins/daterangepicker/moment.min.js");
+      });
+
+    jqchat
+      .ajax({
+        url: pratech.parly.url + "/plugins/daterangepicker/daterangepicker.js",
+        dataType: "script",
+        cache: true
+      })
+      .done(function (script, textStatus) {
+        console.log("load " + pratech.parly.url + "/plugins/daterangepicker/daterangepicker.js");
+      });
+
+    jqchat
+      .ajax({
+        url: pratech.parly.url + "/js/botchat.js",
+        dataType: "script",
+        cache: true
+      })
+      .done(function (script, textStatus) {
+        console.log("load " + pratech.parly.url + "/js/botchat.js");
+      });
+
+    jqchat
+      .ajax({
+        url: pratech.parly.getUrlBaseJS() + "jquery.ui.jqchat.js",
+        dataType: "script",
+        cache: true
+      })
+      .done(function (script, textStatus) {
+        console.log(
+          "load " + pratech.parly.getUrlBaseJS() + "jquery.ui.jqchat.js"
+        );
+      });
+
+    //Js bot framework
+    jqchat
+      .ajax({
+        url: pratech.parly.url + "/js/underscore.js",
+        dataType: "script",
+        cache: true
+      })
+      .done(function (script, textStatus) {
+        pratech.parly._eventosChat();
+      });
+    //Js bot framework
+    jqchat
+      .ajax({
+        url: pratech.parly.url + "/js/jsonform.js",
+        dataType: "script",
+        cache: true
+      })
+      .done(function (script, textStatus) {
+        console.log("load " + pratech.parly.url + "/js/jsonform.js");
+      });
+  },
+
+  urlPasoAsesor: function (activity) {
+    if (activity && activity.type === "event") {
+      if (activity.value.url) {
+        return `${activity.value.url}`;
+      } else {
+        return "";
+      }
+    }
+  },
+
+  disabledForLoad() {
+    pratech.parly.disabledButton();
+    $(".wc-console").addClass("disabled");
+    $(".wc-shellinput").attr("disabled", "disabled");
+  },
+
+  disabledButton() {
+    $(".wc-card-buttons button").click(function () {
+      $(".wc-card-buttons button")
+        .attr("disabled", "disabled")
+        .off("click");
+    });
+  },
+
+  bloquearCampoEscritura: function (activity) {
+    if (activity && activity.type === 'typing') {
+      $(".wc-console").addClass("disabled");
+      $(".wc-shellinput").attr("disabled", "disabled");
+    }
+  },
+
+  habilitarCampoEscritura() {
+    $(".wc-shellinput").removeAttr("disabled");
+    $(".wc-console").removeClass("disabled");
+  },
+
+  reactivarChat() {
+    jqchat(".wc-message-wrapper").removeClass("wc-pratech-typing");
+    pratech.parly.habilitarCampoEscritura();
+    jqchat(".wc-message-groups").animate(
+      {
+        scrollTop: jqchat(".wc-message-group-content").height()
+      },
+      0
+    );
+    jqchat(".pratech-typing").removeClass("show");
+  },
+
+  enableDateRangePicker(maxDays) {
+    jQuery('input[name="daterange"]').daterangepicker({
+      minDate: new Date(),
+      opens: 'left',
+      autoApply: false,
+      startDate: moment(),
+      maxSpan: {
+        "days": maxDays
+      },
+      locale: {
+        format: "YYYY/MM/DD",
+        separator: " - ",
+        applyLabel: "Aplicar",
+        cancelLabel: "Cancelar",
+        fromLabel: "From",
+        toLabel: "To",
+        customRangeLabel: "Custom",
+        weekLabel: "W",
+        daysOfWeek: [
+          "Do",
+          "Lu",
+          "Ma",
+          "Mi",
+          "Ju",
+          "Vi",
+          "Sá"
+        ],
+        monthNames: [
+          "Enero",
+          "Febrero",
+          "Marzo",
+          "Abril",
+          "Mayo",
+          "Junio",
+          "Julio",
+          "Agosto",
+          "Septiembre",
+          "Octubre",
+          "Noviembre",
+          "Diciembre"
+        ],
+        firstDay: 1
+      },
+    }, function (start, end) {
+
+      pratech.parly.initial = start.format('YYYY-DD-MM');
+      pratech.parly.fechafin = end.format('YYYY-DD-MM');
+      let days = end.diff(start, 'days');
+      console.log(`cantidad de dias ${days}`);
+      pratech.parly.diaspermitidos = days;
+      jqchat('#savedatarange').show();
+    });
+  },
+
+  enableCalendar(objeto) {
+    var fechas = [];
+    objeto.forEach(element =>
+      fechas.push(element.Date)
+    );
+    jQuery('input[id="datepicker"]').daterangepicker({
+      singleDatePicker: true,
+      showDropdowns: true,
+      isInvalidDate: function (date) {
+        var formatted = date.format('YYYY-MM-DD');
+        return fechas.indexOf(formatted) < false;
+      },
+      minDate: new Date(),
+      opens: 'left',
+      startDate: moment(),
+      locale: {
+        format: "DD/MM/YYYY",
+        separator: " / ",
+        applyLabel: "Aplicar",
+        cancelLabel: "Cancelar",
+        fromLabel: "From",
+        toLabel: "To",
+        customRangeLabel: "Custom",
+        weekLabel: "W",
+        daysOfWeek: [
+          "Do",
+          "Lu",
+          "Ma",
+          "Mi",
+          "Ju",
+          "Vi",
+          "Sá"
+        ],
+        monthNames: [
+          "Enero",
+          "Febrero",
+          "Marzo",
+          "Abril",
+          "Mayo",
+          "Junio",
+          "Julio",
+          "Agosto",
+          "Septiembre",
+          "Octubre",
+          "Noviembre",
+          "Diciembre"
+        ],
+        firstDay: 1
+      }
+    }, function (start) {
+      pratech.parly.fechavisita = start.format('YYYY-DD-MM');
+      jqchat('#savedatapicker').show();
+    });
+
+  },
+
+  _guid: function () {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+    }
+    return (
+      s4() +
+      s4() +
+      "-" +
+      s4() +
+      "-" +
+      s4() +
+      "-" +
+      s4() +
+      "-" +
+      s4() +
+      s4() +
+      s4()
+    );
+  }
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+  pratech.parly.getScript(
+    pratech.parly.getUrlBaseJS() + "jqchat.js",
+    function () {
+      pratech.parly.initChat();
+    }
+  );
+});

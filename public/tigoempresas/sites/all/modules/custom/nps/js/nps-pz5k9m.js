@@ -1,0 +1,2 @@
+if(typeof(millicom)=='undefined'){var millicom={nps:{}};}
+(function($,Drupal,undefined){Drupal.behaviors.nps_events={attach:function(context,settings){var nps_data=Drupal.settings.nps.nps_data;millicom.nps.b2b_flag=nps_data.nps_flag;millicom.nps.country=nps_data.nps_country;}};})(jQuery,Drupal);

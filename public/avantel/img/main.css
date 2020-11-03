@@ -1,0 +1,353 @@
+
+
+  .pulse-button {
+
+    position: fixed;;
+    right: 20px;
+    top: 400px;
+    width:60px;
+    height:60px;
+    border: none;
+    box-shadow: 0 0 0 0 rgba(232, 76, 61, 0.7);
+    border-radius: 50%;
+    background-color: #ea068c;
+    background-image: url('img/video-conferencia.png');
+    background-size:cover;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    -webkit-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+    -moz-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+    -ms-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+    animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+  }
+  .pulse-button:hover 
+  {
+    -webkit-animation: none;-moz-animation: none;-ms-animation: none;animation: none;
+  }
+  
+  @-webkit-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}
+  @-moz-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}
+  @-ms-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}
+  @keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}
+  
+  .texto-video{
+   color: black;
+   box-shadow: #ea068c;
+  }
+  .imgdatos{
+    height: 300px;
+    width: 1010px;
+  }
+  .img2{
+    padding-bottom:30px;
+    margin-left: 300px;
+    height: 150px;
+    width: 400px;
+  }
+  .section1{
+    align-content: center;
+  }
+
+  .moden{
+    
+   
+    width:985px ;
+    height: 300px;
+    
+    
+  }
+  .iimg{
+    margin: 10px;
+    padding: 10px;
+
+  }
+
+
+
+
+.card2
+{
+   position:fixed;
+   right:0px;
+   top:66px;
+   background: #ff008b;
+   width: 20rem;
+  text-align: center;
+  height: 300px;
+ width: 300px;
+}
+
+.numerox{
+  color: #FFF;
+  
+}
+
+.card-title{
+
+  color: white;
+  text-align: center;
+
+}
+
+.inputNumero{
+  text-align: center;
+}
+
+
+@media (max-width: 1000px) {
+   
+    .imgdatos{
+        height: 200px;
+        width: 750px; 
+      }
+      .img2{
+        padding-bottom:30px;
+        margin-left: 100px;
+        height: 150px;
+        width: 400px;
+      }
+      .section2{
+        margin: 50px;
+        padding: 10px;
+       
+      
+      }
+      .section4{
+        margin: 50px;
+        padding: 10px;
+       
+       
+      
+      }
+      
+      .card2
+{
+   position:relative;
+   margin-left: 250px;
+   margin-top: 30px;
+}
+.moden{
+    
+   
+    width:750px ;
+    height: 200px;
+    margin-left: 15px;
+    
+  }
+
+
+
+  }
+
+  .precio-banner{
+    
+
+    font-family: 'Roboto Condensed', sans-serif;
+
+
+  }
+
+  .caja{
+    
+
+    font-family: 'DINPro-Light';
+    
+    
+
+      background: white;
+      width: 300px;
+      height: 330px;
+      border-width: 8px;
+      border-style: solid;
+      border-color: #ea068c;
+      text-align: center;
+  }
+  .titulo-banner{
+      color:#ea068c;
+      margin-top: 10px;
+  }
+  .texto-banner{
+      padding: 20px;
+    margin-top: 50px;
+    text-align:justify;
+}
+
+  @media (max-width: 768px) {
+  
+    .imgdatos{
+     height: 200px;
+     width: 700px; 
+     margin-left: 20px;
+      }
+      
+      .img2{
+        padding-bottom:30px;
+        margin-left: 130px;
+        height: 150px;
+        width: 500px;
+      }
+      .card2
+      {
+         position:relative;
+         margin-left: 200px;
+         margin-top: 20px;
+      }
+
+      .moden{
+    
+        margin-left: 70px;
+        width:650px ;
+        height: 200px;
+        
+        
+      }
+
+      .section2{
+        margin-left: 60px;
+    }
+
+    .section4{
+      margin-left: 60px;
+  }
+
+  }
+
+  
+  @media (max-width: 414px) {
+    .imgmodal{
+      height: 100px;
+       width: 300px; 
+     }
+    .imgdatos{
+     
+     height: 100px;
+     width: 340px;
+     padding-right: 30px;
+     
+     
+      }
+
+      .img2{
+        padding-bottom:30px;
+        margin-left: 40px;
+        height: 100px;
+        width: 300px;
+      }
+      .card2
+      {
+         position: relative;;
+         margin-left: 25px;
+         margin-top: 20px;
+      }
+
+      .moden{
+    
+        
+        width:375px ;
+        height: 100px;
+        margin-left: 0px;
+        
+        
+        
+        
+      }
+
+      .section2{
+          margin-left: 25px;
+      }
+
+      .section4{
+        margin-left: 25px;
+    }
+
+  }
+
+
+  
+  @media (max-width: 375px) {
+    .imgmodal{
+      height: 100px;
+       width: 300px; 
+     }
+    .imgdatos{
+     
+     height: 100px;
+     width: 340px;
+     padding-right: 30px;
+     
+     
+      }
+
+      .img2{
+        padding-bottom:30px;
+        margin-left: 40px;
+        height: 100px;
+        width: 300px;
+      }
+      .card2
+      {
+         position: relative;;
+         margin-left: 25px;
+         margin-top: 20px;
+      }
+
+      .moden{
+    
+        
+        width:375px ;
+        height: 100px;
+        margin-left: 0px;
+        
+        
+        
+        
+      }
+
+      .section2{
+          margin-left: 25px;
+      }
+
+      .section4{
+        margin-left: 25px;
+    }
+
+  }
+
+
+
+  .btn-llamar{
+   position:fixed;
+    width:90px;
+    height:240px;
+   
+    right:5px;
+    bottom:0px;
+  }
+  .botonF1{
+    width:60px;
+    height:60px;
+    border-radius:100%;
+    background:#ea068c;
+    right:0;
+    bottom:0;
+    position:absolute;
+    margin-right:16px;
+    margin-bottom:16px;
+    border:none;
+    outline:none;
+    color:#FFF;
+    font-size:36px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    transition:.3s;  
+  }
+  
+
+
+  .whatsapp {
+    position: fixed;
+    bottom: 10px;
+    left: 0px;
+    width: 100px;
+    
+  }
+

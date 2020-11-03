@@ -1,0 +1,160 @@
+﻿///Funcion encargada de mostrar el menu segun momento
+function pushMenu() {
+    if ($(window).width() > 768) {
+        if ($(".menu-collapse").length > 0) {
+            $(".mi-etb-Master").removeClass("menu-collapse");
+        } else {
+            console.log("fuu");
+            $(".mi-etb-Master").addClass("menu-collapse");
+            $(".menu-bar").addClass("hidden-xs");
+            $("ul").css("max-height", "");
+            $(".workspace").removeClass("hidden-xs");
+        }
+    } else {
+        $(".mi-etb-Master").removeClass("menu-collapse");
+        if ($(".menu-bar.hidden-xs").length > 0) {
+            console.log("a");
+            $(".workspace").addClass("hidden-xs");
+            $(".menu-bar").removeClass("hidden-xs");
+            $(".h-menu-button a").css("background","url(../images/ic_cerrar_32.png) no-repeat");
+        } else {
+            console.log("b");
+            $(".workspace").removeClass("hidden-xs");
+            $(".menu-bar").addClass("hidden-xs");
+            $(".h-menu-button a").css("background", "url(../images/ic_menu_sprite.png) no-repeat");
+            $("ul").css("max-height", "");
+        }
+    }
+}
+
+function Number_phone(event, el) {//Validar nombre	
+    //Obteniendo posicion del cursor 
+    var val = el.value;//Valor de la caja de texto
+    var pos = val.slice(0, el.selectionStart).length;
+
+    var out = '';//Salida
+    var filtro = '1234567890';
+    var v = 0;//Contador de caracteres validos
+    for (var i = 0; i < val.length; i++) {
+        if (filtro.indexOf(val.charAt(i)) != -1) {
+            v++;
+            out += val.charAt(i);
+            
+            if ((v == 11))
+                out += delete(out);
+                
+        }
+    }
+    el.value = out;
+}
+
+function isValidEmailAddress(emailAddress) {
+    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    return emailReg.test(emailAddress);
+}
+
+function isValidPassword(password) {
+    var patronPassword = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,15}$/);
+    return patronPassword.test(password);
+}
+
+function hasPasswordCarEspeciales(password) {
+    var patronPasswordEspeciales = new RegExp(/(?=.*?[#"'\s/()=?!¡¿+{}<>,:_.@$%^&*-])/);
+    return patronPasswordEspeciales.test(password);
+}
+
+function hasCaracterEspeciales(text) {
+    var patronPasswordEspeciales = new RegExp(/(?=.*?[#"'/()=?!¡¿+{}<>,:_.@$%^&*-])/);
+    return patronPasswordEspeciales.test(text);
+}
+
+function IsANumberPhone(field) {
+    var PatronNumeroCelular = new RegExp(/^(?:\D*\d){10}\D*$/);
+    return PatronNumeroCelular.test(field);
+
+}
+
+function IsANumberCUN(field) {
+    var PatronNumeroCun = new RegExp(/^(?:\D*\d){16}\D*$/);
+    return PatronNumeroCun.test(field);
+
+}
+
+function hasFieldEmpty(field) {
+    if (field == undefined || field == null || field == '')
+    {
+        return true;
+    }
+}
+
+function addError(field, message) {
+    $("#modalSpinner").modal('hide');
+    $(field).parents(".form-group").addClass("has-error");
+    $(field+"Help").text(message);
+}
+
+function isNumber(txt) {
+    for (var i = 0; i < txt.length; i++) {
+        if (txt.charAt(i) != '0' && txt.charAt(i) != '1' &&
+            txt.charAt(i) != '2' && txt.charAt(i) != '3' &&
+            txt.charAt(i) != '4' && txt.charAt(i) != '5' &&
+            txt.charAt(i) != '6' && txt.charAt(i) != '7' &&
+            txt.charAt(i) != '8' && txt.charAt(i) != '9') {
+            return false;
+        }
+    }
+    return true;        
+}
+
+function TieneEspacios(txt) {
+    for (var i = 0; i < txt.length; i++) {
+        if (txt.charAt(i) == ' ') {
+            return true;
+        }
+    }
+    return false;
+}
+
+function convertJsonToDate(objJson) {
+    if (objJson == null) {
+        return objJson;
+    }
+    else {
+        var nuevoobj = objJson.replace("/Date(", "").replace("(", "").replace(")/", "");
+        var fecha = new Date(parseInt(nuevoobj));
+        return fecha;
+    }
+    
+}
+
+function permitirSoloNumeros(idControl) {
+    $("#" + idControl).on('keypress', function (event) {
+        //Compatibilidad chrome firefox
+        var key = (window.event) ? event.keyCode : event.which;
+        if (!(key === 8                   // backspace
+            || key === 9                  // tab
+            || key === 17                 // ctrl
+            || key === 46                 // delete
+            || (key >= 48 && key <= 57)  // numbers on keyboard
+            || (key === 65 && (event.ctrlKey === true || event.metaKey === true))        // Allow: Ctrl+A, Command+A
+            || (key === 65 && prevKey === 17 && prevControl === event.currentTarget.id))    // ctrl + a, on same control
+        ) {
+            event.preventDefault();     // Prevent character input
+        }
+        else {
+            prevKey = key;
+            prevControl = event.currentTarget.id;
+        }
+    }).bind('keyup paste', function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+}
+
+function ValidateLimit(field, min, max) {
+    if (field.length < min || field.length > max) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}

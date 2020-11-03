@@ -1,0 +1,4 @@
+function _less(tag_td,plan_id,solution_id,field_currency,table_id,more_less,product_id)
+{(function($){$(document).ready(function(){var className=tag_td;var input=$('.'+className+' input');if(input.val()!=0){var decrement=parseInt(input.val())-1;$(input).val(decrement);if($('.'+className+' input').is(':checked')){get_plan(className,plan_id,solution_id,field_currency,table_id,more_less,product_id);}}});})(jQuery);}
+function _more(tag_td,plan_id,solution_id,field_currency,table_id,more_less,product_id)
+{(function($){$(document).ready(function(){var className=tag_td;var input=$('.'+className+' input');if(input.val()<99){var increment=parseInt(input.val())+1;input.val(increment);if($('.'+className+'  input').is(':checked')){get_plan(className,plan_id,solution_id,field_currency,table_id,more_less,product_id);}}});})(jQuery)}
