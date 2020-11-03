@@ -2,7 +2,8 @@
 /public/hot
 /public/storage
 /public/blog
-/public/vendor
+/public/vendor/*
+/public/demos
 /storage/*.key
 /vendor
 .env
